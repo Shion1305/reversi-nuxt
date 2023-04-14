@@ -12,6 +12,7 @@
     "nuxt": "^3.3.3"
   },
   "dependencies": {
+    "firebase": "^9.19.1",
     "sass": "^1.62.0"
   }
 }
