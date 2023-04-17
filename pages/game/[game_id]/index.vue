@@ -1,19 +1,25 @@
-<script setup>
+<script setup lang="ts">
 import ReversiBoard from '~/components/ReversiBoard.vue'
 import { getFirestore, doc, onSnapshot, setDoc } from 'firebase/firestore'
+import { GameData } from '~/types/game'
 
-const boardData = ref([])
+let gameData: GameData = ref({
+  board: []
+})
+const boardData = computed(() => gameData.board)
 
 //get game_id from url
 const route = useRoute()
-const gameID = route.params.game_id
+const gameID: string = route.params.game_id as string
 
 // listen to GameData from firestore
 console.log('gameID', gameID)
 const db = getFirestore()
 const gameRef = doc(db, 'games', gameID)
 onSnapshot(gameRef, (doc) => {
-  boardData.value = doc.data().boardData
+  console.log('doc', doc)
+  if (!doc.exists()) useRouter().push('/')
+  gameData = doc.data() as GameData
 })
 // setDoc(gameRef, {
 //   boardData: [
