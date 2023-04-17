@@ -10,6 +10,10 @@ export default defineNuxtConfig({
         projectId: process.env.FIREBASE_PROJECT_ID,
         appId: process.env.FIREBASE_APP_ID
       }
+    },
+    line: {
+      clientID: process.env.LINE_CLIENT_ID,
+      callbackURI: process.env.LINE_CALLBACK_URI
     }
   }
 })
