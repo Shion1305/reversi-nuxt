@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   plugins: ['~/plugins/firebase.client.ts'],
+  ssr: false,
   runtimeConfig: {
     public: {
       firebase: {
