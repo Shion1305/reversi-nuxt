@@ -1,13 +1,17 @@
-<template>
-  <div>Welcome!!</div>
-</template>
+<script setup lang="ts">
+const username: string = 'test'
 
-<script>
-export default {
-  name: "index"
+const { signIn } = useLogin()
+function onLoginClick() {
+  if (username === '') return
+  signIn(username)
 }
 </script>
+<template>
+  <div>Welcome!!</div>
+  <h1>Login</h1>
+  <div><span>Username: </span><input type="text" v-model="username" /></div>
+  <button @click="signIn">SignIn</button>
+</template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
