@@ -13,7 +13,11 @@ export default defineNuxtConfig({
     },
     line: {
       clientID: process.env.LINE_CLIENT_ID,
-      callbackURI: process.env.LINE_CALLBACK_URI
+      callbackURI: process.env.LINE_CALLBACK_URI,
+      clientSecret: process.env.LINE_CLIENT_SECRET
+    },
+    firebase_admin: {
+      certPath: process.env.FIREBASE_ADMIN_CERT_PATH
     }
   }
 })
