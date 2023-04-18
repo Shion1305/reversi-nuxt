@@ -5818,6 +5818,7 @@ __metadata:
   dependencies:
     firebase: ^9.19.1
     firebase-admin: ^11.6.0
+    jsonwebtoken: ^9.0.0
     nuxt: ^3.3.3
     prettier: ^2.8.7
     sass: ^1.62.0
