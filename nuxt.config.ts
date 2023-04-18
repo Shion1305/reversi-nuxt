@@ -18,6 +18,9 @@ export default defineNuxtConfig({
     },
     firebase_admin: {
       certPath: process.env.FIREBASE_ADMIN_CERT_PATH
+    },
+    jwt: {
+      secret: process.env.JWT_SECRET
     }
   }
 })
