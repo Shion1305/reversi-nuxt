@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-const props = withDefaults(defineProps<{ boardData: any }>(), {
-  boardData: [
+const props = withDefaults(defineProps<{ board: number[] }>(), {
+  board: () => [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -9,8 +9,8 @@ const props = withDefaults(defineProps<{ boardData: any }>(), {
 const boardRows = computed(() => {
   const size = 8
   const result = []
-  for (let i = 0; i < props.boardData.length; i += size) {
-    result.push(props.boardData.slice(i, i + size))
+  for (let i = 0; i < props.board.length; i += size) {
+    result.push(props.board.slice(i, i + size))
   }
   return result
 })
