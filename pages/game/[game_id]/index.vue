@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import ReversiBoard from '~/components/ReversiBoard.vue'
-import { getFirestore, doc, onSnapshot, setDoc } from 'firebase/firestore'
+import {
+  getFirestore,
+  doc,
+  onSnapshot,
+  setDoc,
+  DocumentReference
+} from 'firebase/firestore'
 import { GameData } from '~/types/game'
 
-let gameData: GameData = ref({
-  board: []
+const data: { gameData: GameData } = ref({
+  gameData: { board: [] }
 })
-const boardData = computed(() => gameData.board)
+const boardData = computed(() => data.gameData.board ?? [])
 
 //get game_id from url
 const route = useRoute()
@@ -15,14 +21,14 @@ const gameID: string = route.params.game_id as string
 // listen to GameData from firestore
 console.log('gameID', gameID)
 const db = getFirestore()
-const gameRef = doc(db, 'games', gameID)
+const gameRef = doc(db, 'games', gameID) as DocumentReference<GameData>
 onSnapshot(gameRef, (doc) => {
-  console.log('doc', doc)
   if (!doc.exists()) useRouter().push('/')
-  gameData = doc.data() as GameData
+  data.gameData = doc.data() as GameData
+  console.log('doc', data.gameData.board)
 })
 // setDoc(gameRef, {
-//   boardData: [
+//   board: [
 //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 //     0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -34,7 +40,7 @@ const logClick = function (row, col) {
 </script>
 
 <template>
-  <ReversiBoard :boardData="boardData" @cell-click="logClick" />
+  <ReversiBoard :board="boardData" @cell-click="logClick" />
 </template>
 
 <style lang="scss" scoped>
