@@ -4,15 +4,15 @@ import {
   getFirestore,
   doc,
   onSnapshot,
-  setDoc,
   DocumentReference
 } from 'firebase/firestore'
 import { GameData } from '~/types/game'
 
-const data: { gameData: GameData } = ref({
-  gameData: { board: [] }
+const data: { gameData: GameData } = reactive({
+  gameData: {
+    board: []
+  } as GameData
 })
-const boardData = computed(() => data.gameData.board ?? [])
 
 //get game_id from url
 const route = useRoute()
@@ -27,20 +27,13 @@ onSnapshot(gameRef, (doc) => {
   data.gameData = doc.data() as GameData
   console.log('doc', data.gameData.board)
 })
-// setDoc(gameRef, {
-//   board: [
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-//   ]
-// })
 const logClick = function (row, col) {
   console.log(row, col)
 }
 </script>
 
 <template>
-  <ReversiBoard :board="boardData" @cell-click="logClick" />
+  <ReversiBoard :board="data.gameData.board" @cell-click="logClick" />
 </template>
 
 <style lang="scss" scoped>
