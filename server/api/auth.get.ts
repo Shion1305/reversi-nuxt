@@ -6,6 +6,9 @@ import { User } from '~/types/user'
 import { generateToken, verifyToken } from '~/server/jwt'
 import { H3Event } from 'h3'
 import axios from 'axios'
+import cookie from 'cookie'
+
+const db = admin.firestore()
 
 async function getAccessToken(
   code: string
@@ -50,18 +53,24 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
     tokenInfo.access_token
   )
   console.log(profileInfo.userId)
-  // const db = admin.firestore()
-  // const userDoc = await db.collection('users').doc(profileInfo.userId).get()
-  // if (!userDoc.exists) {
-  //   const user: User = {
-  //     username: profileInfo.displayName,
-  //     profile_icon_url: profileInfo.pictureUrl,
-  //     line_service_id: profileInfo.userId
-  //   }
-  //   await db.collection('users').doc(profileInfo.userId).set(user)
-  // }
-  // const token = generateToken(profileInfo.userId)
-  // event.respondWith()
-  // return profileInfo
-  return { userID: profileInfo.userId }
+
+  const userDoc = await db.collection('users').doc(profileInfo.userId).get()
+  if (!userDoc.exists) {
+    const user: User = {
+      username: profileInfo.displayName,
+      line_service_id: profileInfo.userId
+    }
+    await db.collection('users').doc(profileInfo.userId).set(user)
+  }
+  const token = generateToken(profileInfo.userId)
+
+  const serializedCookie = cookie.serialize('authToken', token, {
+    httpOnly: true,
+    maxAge: 60 * 60 * 24,
+    path: '/',
+    sameSite: 'lax'
+  })
+
+  event.res.setHeader('set-cookie', serializedCookie)
+  return sendRedirect(event, '/', 302)
 })
