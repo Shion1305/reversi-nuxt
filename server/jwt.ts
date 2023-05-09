@@ -12,12 +12,16 @@ const generateToken = (id: string) => {
   })
 }
 
-const verifyToken = (token: string): string | null => {
+const verifyToken = (token: string): JWTPayload | null => {
   try {
     const id = jwt.verify(token, SECRET_KEY, { algorithms: ['HS256'] })
     console.log('decoded id: ', id)
-    return id as string
+    if (id) {
+      return id as JWTPayload
+    }
+    return null
   } catch (error) {
+    console.log('error: ', error)
     return null
   }
 }
