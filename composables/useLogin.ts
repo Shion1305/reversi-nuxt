@@ -6,7 +6,6 @@ export const useLogin = () => {
   const signIn = async (username: string) => {
     currentUser.value = {
       username,
-      profile_icon_url: '',
       line_service_id: ''
     }
   }
