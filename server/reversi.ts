@@ -84,6 +84,11 @@ class Reversi {
                 }
             }
         });
+        this.board.forEach((x,i)=>{
+            if(x == 3){
+                this.board[i] = 0;
+            }
+        });
         this.board.forEach((x,i) => {
             if(x === 0||3) {
                 if(this.checkAllDirections(i,opponent)){
