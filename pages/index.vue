@@ -8,10 +8,28 @@ function onLoginClick() {
 }
 </script>
 <template>
-  <div>Welcome!!</div>
-  <h1>Login</h1>
-  <div><span>Username: </span><input type="text" v-model="username" /></div>
-  <button @click="signIn">SignIn</button>
+    <a>
+        <div class="relative">
+            <img src="@/assets/imgs/frog_with_board_green.png">
+            <div class="loginbtn"><img src="@/assets/imgs/btn_login_hover.png" class="absolute"></div>
+        </div>
+    </a>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+.relative {
+    position: relative;
+    text-align: center;
+}
+.loginbtn img{
+    width: 300px;
+}
+
+.absolute {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>
