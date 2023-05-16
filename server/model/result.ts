@@ -6,5 +6,6 @@ interface Result{
     black_num : Number
     white_num : Number
     winner : "black"|"white"|"draw"
+    surrender : boolean
     time : Date
 }
