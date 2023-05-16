@@ -1,10 +1,13 @@
-import * as admin from 'firebase-admin'
+import admin from 'firebase-admin'
+import * as fs from 'fs'
 
 const config = useRuntimeConfig()
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(config.firebase_admin.certPath)
-  })
-}
+// read json file from FileSystem and parse it as json object
+const credential = JSON.parse(
+  fs.readFileSync(config.firebase_admin.certPath, 'utf8')
+)
+admin.initializeApp({
+  credential: admin.credential.cert(credential as admin.ServiceAccount)
+})
 
 export default admin

@@ -6,15 +6,22 @@ const config = useRuntimeConfig()
 const SECRET_KEY = config.jwt.secret
 
 const generateToken = (id: string) => {
-  return jwt.sign(id, SECRET_KEY, { expiresIn: '7d', algorithm: 'HS256' })
+  return jwt.sign({ id: id }, SECRET_KEY, {
+    expiresIn: '1d',
+    algorithm: 'HS256'
+  })
 }
 
-const verifyToken = (token: string): string | null => {
+const verifyToken = (token: string): JWTPayload | null => {
   try {
     const id = jwt.verify(token, SECRET_KEY, { algorithms: ['HS256'] })
     console.log('decoded id: ', id)
-    return id as string
+    if (id) {
+      return id as JWTPayload
+    }
+    return null
   } catch (error) {
+    console.log('error: ', error)
     return null
   }
 }
