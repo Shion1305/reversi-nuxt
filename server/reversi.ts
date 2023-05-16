@@ -61,7 +61,10 @@ class Reversi {
         return directions.some(([dx, dy]) => this.checkDirection(index, player, dx, dy));
     }
 
-    placePiece(index: number, player: Cell): [boolean,Number,Number[]] {
+    placePiece(index: number, player: Cell): [boolean,Number,Number[]] |boolean{
+        if(this.board[index] !== 3){
+            return false;
+        }
         this.board[index] = player;
         let opponent = this.getOpponent(player);
         const directions = [
@@ -127,11 +130,11 @@ class Reversi {
             }
         });
         if(black > white){
-            return [0,black,white];
-        }else if(black < white){
             return [1,black,white];
-        }else{
+        }else if(black < white){
             return [2,black,white];
+        }else{
+            return [0,black,white];
         }
     }
 }
