@@ -1,6 +1,7 @@
 import {Disc} from '~/server/model/disc'
+import {ReversiResult} from "~/server/model/reversiresult";
 
-class ReversiBoard {
+export class ReversiBoard {
   private board: Disc[]
 
   constructor(initialState?: Disc[]) {
@@ -73,7 +74,7 @@ class ReversiBoard {
     )
   }
 
-  placePiece(index: number, player: Disc): [boolean, Number, Number[]]|boolean {
+  placePiece(index: number, player: Disc): [boolean, Disc, Disc[]]|boolean {
       if(this.board[index] !== Disc.EMPTY_POSSIBLE){
           return false
       }
@@ -130,12 +131,12 @@ class ReversiBoard {
         }
       })
     } else {
-      return [false, <Number>opponent, <Number[]>this.board]
+      return [false, opponent, this.board]
     }
     if (flag === 0) {
-      return [true, <Number>player, <Number[]>this.board]
+      return [true, player, this.board]
     } else {
-      return [false, <Number>player, <Number[]>this.board]
+      return [false, player, this.board]
     }
   }
 
@@ -150,11 +151,11 @@ class ReversiBoard {
             }
         });
         if(black > white){
-            return [0,black,white];
+            return [ReversiResult.BLACK,black,white];
         }else if(black < white){
-            return [1,black,white];
+            return [ReversiResult.WHITE,black,white];
         }else{
-            return [2,black,white];
+            return [ReversiResult.DRAW,black,white];
         }
     }
 }
