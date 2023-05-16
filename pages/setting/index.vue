@@ -8,7 +8,7 @@
     <h1 class="absolute01">名前は？</h1>
     <img src="@/assets/imgs/otamajakusi.png" alt="">
     <input class="absolute02" type="text">
-
+    <input class="absolute03" type="submit" value="OK">
 </div>
 </template>
 
@@ -39,4 +39,13 @@
     height:100px;
 }
 
+.absolute03{
+    position:absolute;
+    color:red;
+    background-color: darkseagreen;
+    font-size: 200%;
+    top:430px;
+    left:900px;
+    width:100px;
+}
 </style>
