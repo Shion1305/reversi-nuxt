@@ -28,6 +28,7 @@
 }
 
 #background-pond {
+  object-fit: cover;
   z-index: -10;
   top: 0;
   bottom: 0;
