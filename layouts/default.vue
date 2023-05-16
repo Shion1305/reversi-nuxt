@@ -1,4 +1,5 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+</script>
 
 <template>
   <div id="base-background">
@@ -8,7 +9,7 @@
         <slot />
       </main>
     </div>
-    <img id="background-pond" src="@/assets/imgs/pond.png" />
+      <img id="background-pond" src="@/assets/imgs/pond.png" />
   </div>
 </template>
 
