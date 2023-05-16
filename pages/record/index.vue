@@ -15,7 +15,7 @@
         </div>
         </div>
         <div class="table">
-            <table border="1" bgcolor=rgba(0,0,0,0) width="750" height="150">
+            <table border="1" bgcolor="#90ee90" width="750" height="150">
                 <tr>
                     <th>名前</th>
                     <th>勝敗</th>
