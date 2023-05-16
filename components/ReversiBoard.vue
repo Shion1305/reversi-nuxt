@@ -23,11 +23,7 @@ const emits =
   <div class="board">
     <div v-for="(row, index1) in boardRows" :key="row.index" class="board-row">
       <div v-for="(s, index2) in row" class="board-cell">
-        <div
-          class="cell"
-          :class="s === 0 ? 'empty' : s === 1 ? 'black' : 'white'"
-          @click="emits('cell-click', index1, index2)"
-        ></div>
+        <Disc :disc="s" @click="emits('cell-click', index1, index2)" />
       </div>
     </div>
   </div>
@@ -38,10 +34,9 @@ const emits =
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   border: 2px solid #000;
-  background-color: #228b22;
 }
 
 .board-row {
@@ -55,6 +50,13 @@ const emits =
   width: 100%;
   height: 100%;
   border: 1px solid #000;
+  padding: 3%;
+  box-sizing: border-box;
+
+  > .disc {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .cell {
