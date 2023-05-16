@@ -30,7 +30,6 @@ const props = withDefaults(
 .disc {
   box-sizing: border-box;
   margin: 5%;
-  background-image: url('@/assets/imgs/greenlotus.png');
   background-size: cover;
   aspect-ratio: 1;
   width: 100%;
@@ -40,7 +39,7 @@ const props = withDefaults(
   position: relative;
 
   > * {
-    width: 50%;
+    width: 100%;
     aspect-ratio: 1;
     position: absolute;
   }
@@ -52,6 +51,7 @@ const props = withDefaults(
   #hint {
     background: #fff;
     opacity: 0.4;
+    width: 60%;
     border-radius: 50%;
   }
 }
