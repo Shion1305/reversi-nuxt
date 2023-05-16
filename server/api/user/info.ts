@@ -5,7 +5,10 @@ const db = admin.firestore()
 export default defineEventHandler(async (event) => {
   const userID = event.context.userID
   if (!userID) {
-    return sendError(event, new Error('not authorized'))
+    return createError({
+      statusCode: 401,
+      message: 'not authorized'
+    })
   }
   const user: string | null = await db
     .collection('users')
@@ -28,7 +31,10 @@ export default defineEventHandler(async (event) => {
       return null
     })
   if (!user) {
-    return sendError(event, new Error('not authorized'))
+    return createError({
+      statusCode: 400,
+      message: 'invalid user'
+    })
   }
   return {
     userID: event.context.userID,
