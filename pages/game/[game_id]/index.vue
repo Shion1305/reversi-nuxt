@@ -33,16 +33,47 @@ const logClick = function (row, col) {
 </script>
 
 <template>
-  <ReversiBoard :board="data.gameData.board" @cell-click="logClick" />
+  <div class="page-frame">
+    <div id="result-pane"></div>
+    <div id="board-pane">
+      <div id="board-container">
+        <ReversiBoard :board="data.gameData.board" @cell-click="logClick" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-body {
+.page-frame {
+  display: flex;
+  flex-direction: row-reverse;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+
+#board-pane {
+  height: 100%;
+}
+
+#board-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f0f0f0;
+  width: min(100lvw - 400px, 100lvh - 120px);
+  aspect-ratio: 1;
+  padding: 5%;
+  box-sizing: border-box;
+  margin: auto;
+}
+
+#board-pane {
+  display: flex;
+}
+
+#result-pane {
+  right: 0;
+  width: 400px;
+  height: 100%;
 }
 </style>
