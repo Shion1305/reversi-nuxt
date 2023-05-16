@@ -31,11 +31,11 @@ const emits =
 
 <style scoped lang="scss">
 .board {
+  aspect-ratio: 1;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
   width: 100%;
-  height: 100%;
   border: 2px solid #000;
 }
 
