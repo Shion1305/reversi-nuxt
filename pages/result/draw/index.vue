@@ -4,19 +4,19 @@
 
 <template>
     <div>
-        <p class="win">You win!!</p>
+        <p class="win">Draw</p>
         <div class="score">
             <div class="square"></div>
             <p>-</p>
             <div class="square"></div>
         </div>
         <div class="frog">
-            <img src="@/assets/imgs/GreenFrog.png" alt="" class="gf">
-            <img src="@/assets/imgs/PinkFrog.png" alt="" class="pf">
+            <img src="../../../assets/imgs/GreenFrog.png" alt="" class="gf">
+            <img src="../../../assets/imgs/PinkFrog.png" alt="" class="pf">
         </div>
         <div class="relative">
             <a>
-                <img src="@/assets/imgs/frog_with_board_green.png" alt="" class="board">
+                <img src="../../../assets/imgs/frog_with_board_green.png" alt="" class="board">
                 <p class="absolute">タイトルに戻る</p>
             </a>
         </div>
@@ -38,9 +38,9 @@ div{
 }
 
 .win{
-    color:red;
+    color:green;
     position: relative;
-    right: 15%;
+    right: 20%;
     font-size: 400%;
 }
 
