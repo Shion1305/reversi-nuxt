@@ -14,25 +14,40 @@
             <p><font size="30">引き分け:0 投了:0</font></p>
         </div>
         </div>
+
         <div class="table">
             <table border="1" bgcolor="#90ee90" width="750" height="150">
-                <tr>
+
+                <tr height="20">
                     <th>名前</th>
                     <th>勝敗</th>
                     <th>自分</th>
                     <th>相手</th>
                 </tr>
-                <tr>
-                    <th>太郎</th>
-                    <th>勝ち</th>
-                    <th>６０</th>
-                    <th>　４</th>
+
+                <tr height="40">
+                    <td>太郎</td>
+                    <td>勝ち</td>
+                    <td>６０</td>
+                    <td>　４</td>
                 </tr>
-                <tr>
-                    <th>太郎</th>
-                    <th>負け</th>
-                    <th>　４</th>
-                    <th>６０</th>
+                <tr height="40">
+                    <td>太郎</td>
+                    <td>負け</td>
+                    <td>　４</td>
+                    <td>６０</td>
+                </tr>
+                <tr height="40">
+                    <td>太郎</td>
+                    <td>勝ち</td>
+                    <td>６０</td>
+                    <td>　４</td>
+                </tr>
+                <tr height="40">
+                    <td>太郎</td>
+                    <td>勝ち</td>
+                    <td>６０</td>
+                    <td>　４</td>
                 </tr>
             </table>
         </div>
@@ -56,7 +71,18 @@
     justify-content: center;
 }
 .table{
-    display: flex;
-    justify-content: center;
+    position: absolute;
+    left: 250px;
+    bottom: 50px;
+    overflow-y: scroll;
+    width: 767px;
+    height: 150px;
 }
+.table th{
+    background: forestgreen;
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+
 </style>
