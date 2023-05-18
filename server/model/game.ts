@@ -1,14 +1,15 @@
 import { Disc } from '~/server/model/disc'
+import { DiscRole } from '~/server/model/disc_role'
 
 export interface Game {
   id: string
   board: Disc[]
-  turn: 'black' | 'white'
+  turn: DiscRole
   users: string[]
   black_user: string
   white_user: string
-  black_num: Number
-  white_num: Number
+  black_num: number
+  white_num: number
   black_time: Date
   white_time: Date
   end: boolean
