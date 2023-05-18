@@ -1,4 +1,5 @@
 import { Disc } from '~/server/model/disc'
+import { DiscRole } from '~/server/model/disc_role'
 
 export class ReversiBoard {
   private board: Disc[]
@@ -12,7 +13,7 @@ export class ReversiBoard {
     }
   }
 
-  public placeDisc(index: number, disc: Disc): Disc[] | null {
+  public placeDisc(index: number, discRole: DiscRole): Disc[] | null {
     if (
       this.board[index] !== Disc.EMPTY &&
       this.board[index] !== Disc.EMPTY_POSSIBLE
@@ -21,8 +22,10 @@ export class ReversiBoard {
     }
 
     const newBoard = [...this.board]
-    newBoard[index] = disc
-    const opponentDisc: Disc = disc === Disc.BLACK ? Disc.WHITE : Disc.BLACK
+    const userDisc = DiscRole.getDisc(discRole)
+    newBoard[index] = userDisc
+    const opponentDisc: Disc =
+      discRole === DiscRole.BLACK ? Disc.WHITE : Disc.BLACK
 
     const directions = [-1, -1 + 8, 8, 1 + 8, 1, 1 - 8, -8, -1 - 8]
 
@@ -39,12 +42,12 @@ export class ReversiBoard {
         flipped = true
       }
 
-      if (flipped && newBoard[currentIndex] === disc) {
+      if (flipped && newBoard[currentIndex] === userDisc) {
         validMove = true
 
         currentIndex -= direction
         while (currentIndex !== index) {
-          newBoard[currentIndex] = disc
+          newBoard[currentIndex] = userDisc
           currentIndex -= direction
         }
       }
