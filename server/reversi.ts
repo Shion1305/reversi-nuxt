@@ -140,7 +140,7 @@ export class ReversiBoard {
     }
   }
 
-    count():[number,number,number]{
+    count():[ReversiResult,number,number]{
         let black= 0;
         let white = 0;
         this.board.forEach((x)=>{
