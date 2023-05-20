@@ -36,8 +36,8 @@ it("基本動作(逆)",( ) => {
 it("パス",()=>{
     let position = 0;
     let board = Array(64).fill(Disc.EMPTY);
-    board[2] = Disc.WHITE;
-    board[1] = board[8] = Disc.BLACK;
+    board[1] = board[8] = Disc.WHITE;
+    board[2] = Disc.BLACK;
     board [0] = Disc.EMPTY_POSSIBLE;
     let answer = Array(64).fill(Disc.EMPTY);
     answer[0] = answer[1] = answer[2] = Disc.BLACK;
