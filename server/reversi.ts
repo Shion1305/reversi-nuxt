@@ -1,16 +1,17 @@
-import { Disc } from '~/server/model/disc'
+import {Disc} from '~/server/model/disc'
+import {ReversiResult} from "~/server/model/reversiresult";
 
-class ReversiBoard {
+export class ReversiBoard {
   private board: Disc[]
 
   constructor(initialState?: Disc[]) {
     if (initialState && initialState.length === 64) {
       this.board = initialState
     } else {
-      this.board = Array(64).fill(0)
-      this.board[27] = this.board[36] = 2
-      this.board[28] = this.board[35] = 1
-      this.board[19] = this.board[26] = this.board[37] = this.board[44] = 3
+      this.board = Array(64).fill(Disc.EMPTY)
+      this.board[27] = this.board[36] = Disc.WHITE
+      this.board[28] = this.board[35] = Disc.BLACK
+      this.board[19] = this.board[26] = this.board[37] = this.board[44] = Disc.EMPTY_POSSIBLE
     }
   }
 
@@ -73,7 +74,10 @@ class ReversiBoard {
     )
   }
 
-  placePiece(index: number, player: Disc): [boolean, Number, Number[]] {
+  placePiece(index: number, player: Disc): [boolean, Disc, Disc[]]|boolean {
+      if(this.board[index] !== Disc.EMPTY_POSSIBLE){
+          return false
+      }
     this.board[index] = player
     let opponent = this.getOpponent(player)
     const directions = [
@@ -104,49 +108,54 @@ class ReversiBoard {
         }
       }
     })
+      this.board.forEach((x, i) => {
+          if (x === Disc.EMPTY_POSSIBLE) {
+              this.board[i] = Disc.EMPTY
+          }
+      })
     this.board.forEach((x, i) => {
-      if (x === Disc.EMPTY || 3) {
+      if (x === Disc.EMPTY || Disc.EMPTY_POSSIBLE) {
         if (this.checkAllDirections(i, opponent)) {
-          this.board[i] = 3
+          this.board[i] = Disc.EMPTY_POSSIBLE
           flag = 1
         }
       }
     })
     if (flag === 0) {
       this.board.forEach((x, i) => {
-        if (x === Disc.EMPTY || 3) {
+        if (x === Disc.EMPTY || Disc.EMPTY_POSSIBLE) {
           if (this.checkAllDirections(i, player)) {
-            this.board[i] = 3
+            this.board[i] = Disc.EMPTY_POSSIBLE
             flag = 1
           }
         }
       })
     } else {
-      return [false, <Number>opponent, <Number[]>this.board]
+      return [false, opponent, this.board]
     }
     if (flag === 0) {
-      return [true, <Number>player, <Number[]>this.board]
+      return [true, player, this.board]
     } else {
-      return [false, <Number>player, <Number[]>this.board]
+      return [false, player, this.board]
     }
   }
 
-  count(): [number, number, number] {
-    let black = 0
-    let white = 0
-    this.board.forEach((x) => {
-      if (x === 1) {
-        black++
-      } else if (x === 2) {
-        white++
-      }
-    })
-    if (black > white) {
-      return [0, black, white]
-    } else if (black < white) {
-      return [1, black, white]
-    } else {
-      return [2, black, white]
+    count():[number,number,number]{
+        let black= 0;
+        let white = 0;
+        this.board.forEach((x)=>{
+            if(x === Disc.BLACK){
+                black++;
+            }else if(x === Disc.WHITE) {
+                white++;
+            }
+        });
+        if(black > white){
+            return [ReversiResult.BLACK,black,white];
+        }else if(black < white){
+            return [ReversiResult.WHITE,black,white];
+        }else{
+            return [ReversiResult.DRAW,black,white];
+        }
     }
-  }
 }

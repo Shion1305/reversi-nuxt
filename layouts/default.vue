@@ -27,6 +27,11 @@
   flex-direction: column;
 }
 
+main {
+  width: 100%;
+  height: calc(100lvh - 120px);
+}
+
 #background-pond {
   object-fit: cover;
   z-index: -10;
