@@ -1,6 +1,9 @@
 import { getGameByID } from '~/server/pkg/game'
 import { ReversiBoard } from '~/server/model/reversiBoard'
 import { DiscRole } from '~/server/model/disc_role'
+import admin from '~/server/firebase-admin'
+
+const db = admin.firestore()
 
 export interface ActionRequest {
   gameID: string
@@ -61,17 +64,16 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const board = new ReversiBoard(game.board)
-  const newBoard = board.placeDisc(req.index, game.turn)
-  if (!newBoard) {
+  const board = new ReversiBoard(game)
+  const newGame = board.placeDisc(req.index)
+  if (!newGame) {
     return createError({
       statusCode: 400,
       statusMessage: 'Bad Request'
     })
   }
 
-  game.board = newBoard
-  game.turn = game.turn === DiscRole.BLACK ? DiscRole.WHITE : DiscRole.BLACK
+  await db.collection('games').doc(game.id).set(newGame)
 
   return {
     statusCode: 200
