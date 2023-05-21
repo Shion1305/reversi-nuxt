@@ -2,6 +2,17 @@ import { Disc } from '~/server/model/disc'
 import { DiscRole } from '~/server/model/disc_role'
 import { Game } from '~/server/model/game'
 
+const directions: number[][] = [
+  [1, 0],
+  [0, 1],
+  [-1, 0],
+  [0, -1],
+  [1, 1],
+  [-1, 1],
+  [-1, -1],
+  [1, -1]
+]
+
 export class ReversiBoard {
   private readonly game: Game
 
@@ -76,16 +87,6 @@ export class ReversiBoard {
       }
     }
 
-    const directions: number[][] = [
-      [1, 0],
-      [0, 1],
-      [-1, 0],
-      [0, -1],
-      [1, 1],
-      [-1, 1],
-      [-1, -1],
-      [1, -1]
-    ]
     const opponentDisc = DiscRole.getDisc(
       DiscRole.getOpponentDisc(this.game.turn)
     )
@@ -124,6 +125,47 @@ export class ReversiBoard {
         }
       }
     }
+  }
+
+  public checkOpponentDiscPossible(): boolean {
+    const currentDisc = DiscRole.getDisc(this.game.turn)
+    const opponentDisc = DiscRole.getDisc(
+      DiscRole.getOpponentDisc(this.game.turn)
+    )
+    for (let i = 0; i < 64; i++) {
+      if (this.game.board[i] !== Disc.EMPTY) {
+        continue
+      }
+
+      const originX = i % 8
+      const originY = Math.floor(i / 8)
+
+      for (const direction of directions) {
+        let currentX = originX + direction[0]
+        let currentY = originY + direction[1]
+        let flipped = false
+
+        while (
+          this.game.board[currentX + currentY * 8] === currentDisc &&
+          currentX >= 0 &&
+          currentX < 8 &&
+          currentY >= 0 &&
+          currentY < 8
+        ) {
+          currentX += direction[0]
+          currentY += direction[1]
+          flipped = true
+        }
+
+        if (
+          flipped &&
+          this.game.board[currentX + currentY * 8] === opponentDisc
+        ) {
+          return true
+        }
+      }
+    }
+    return false
   }
 
   public countDiscs(): { black: number; white: number } {
