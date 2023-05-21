@@ -85,10 +85,11 @@
                     <td>　０</td>
                 </tr>
                 <tr height="40">
-                    <td>太郎</td>
-                    <td>勝ち</td>
-                    <td>６０</td>
-                    <td>　４</td>
+                    <td>四郎</td>
+                    <td>２０</td>
+                    <td>１２</td>
+                    <td>　０</td>
+                    <td>　０</td>
                 </tr>
             </table>
         </div>
