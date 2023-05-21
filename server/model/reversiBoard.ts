@@ -25,7 +25,7 @@ export class ReversiBoard {
     }
   }
 
-  public placeDisc(index: number, discRole: DiscRole): Game | null {
+  public placeDisc(index: number): Game | null {
     if (this.game.end) {
       return null
     }
@@ -37,31 +37,49 @@ export class ReversiBoard {
     }
 
     const newBoard = [...this.game.board]
-    const userDisc = DiscRole.getDisc(discRole)
+    const userDisc = DiscRole.getDisc(this.game.turn)
     newBoard[index] = userDisc
-    const opponentDisc: Disc =
-      discRole === DiscRole.BLACK ? Disc.WHITE : Disc.BLACK
-
-    const directions = [-1, -1 + 8, 8, 1 + 8, 1, 1 - 8, -8, -1 - 8]
+    const opponentDisc: Disc = DiscRole.getDisc(
+      DiscRole.getOpponentDisc(this.game.turn)
+    )
 
     let validMove = false
 
+    const originX = index % 8
+    const originY = Math.floor(index / 8)
+
     for (const direction of directions) {
-      let currentIndex = index + direction
+      let currentX = originX + direction[0]
+      let currentY = originY + direction[1]
+
       let flipped = false
 
-      while (newBoard[currentIndex] === opponentDisc) {
-        currentIndex += direction
+      while (
+        currentX >= 0 &&
+        currentX < 8 &&
+        currentY >= 0 &&
+        currentY < 8 &&
+        newBoard[currentX + currentY * 8] === opponentDisc
+      ) {
+        currentX += direction[0]
+        currentY += direction[1]
         flipped = true
       }
 
-      if (flipped && newBoard[currentIndex] === userDisc) {
+      if (
+        currentX >= 0 &&
+        currentX < 8 &&
+        currentY >= 0 &&
+        currentY < 8 &&
+        newBoard[currentX + currentY * 8] === userDisc &&
+        flipped
+      ) {
         validMove = true
 
-        currentIndex -= direction
-        while (currentIndex !== index) {
-          newBoard[currentIndex] = userDisc
-          currentIndex -= direction
+        while (currentX !== originX || currentY !== originY) {
+          currentX -= direction[0]
+          currentY -= direction[1]
+          newBoard[currentX + currentY * 8] = userDisc
         }
       }
     }
@@ -72,10 +90,17 @@ export class ReversiBoard {
 
     this.game.board = newBoard
     this.updatePossibleDiscs()
-    this.game.turn = DiscRole.getOpponentDisc(discRole)
+    this.game.turn = DiscRole.getOpponentDisc(this.game.turn)
     const discCount = this.countDiscs()
     this.game.black_num = discCount.black
     this.game.white_num = discCount.white
+    this.game.possible_num = discCount.possible
+
+    if (discCount.possible === 0) {
+      if (!this.checkOpponentDiscPossible()) {
+        this.game.end = true
+      }
+    }
 
     return this.game
   }
@@ -168,18 +193,21 @@ export class ReversiBoard {
     return false
   }
 
-  public countDiscs(): { black: number; white: number } {
+  public countDiscs(): { black: number; white: number; possible: number } {
     let black = 0
     let white = 0
+    let possible = 0
 
     for (const disc of this.game.board) {
       if (disc === Disc.BLACK) {
         black++
       } else if (disc === Disc.WHITE) {
         white++
+      } else if (disc === Disc.EMPTY_POSSIBLE) {
+        possible++
       }
     }
 
-    return { black, white }
+    return { black, white, possible }
   }
 }
