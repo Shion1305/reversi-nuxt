@@ -10,6 +10,7 @@ export interface Game {
   white_user: string
   black_num: number
   white_num: number
+  possible_num: number
   black_time: Date
   white_time: Date
   end: boolean

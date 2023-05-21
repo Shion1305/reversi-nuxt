@@ -5,7 +5,7 @@ import admin from '~/server/firebase-admin'
 
 const db = admin.firestore()
 
-export interface ActionRequest {
+export interface PlaceRequest {
   gameID: string
   index: number
 }
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 
   const req = await readBody(event)
     .then((body) => {
-      return JSON.parse(body) as ActionRequest
+      return JSON.parse(body) as PlaceRequest
     })
     .catch(() => {
       return null
