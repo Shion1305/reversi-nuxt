@@ -1,27 +1,31 @@
 import { Disc } from '~/server/model/disc'
 import { DiscRole } from '~/server/model/disc_role'
+import { Game } from '~/server/model/game'
 
 export class ReversiBoard {
-  private board: Disc[]
+  private readonly game: Game
 
-  constructor(inputBoard: Disc[]) {
-    this.board = [...inputBoard]
-    for (let i = 0; i < this.board.length; i++) {
-      if (this.board[i] === Disc.EMPTY_POSSIBLE) {
-        this.board[i] = Disc.EMPTY
+  constructor(game: Game) {
+    this.game = Object.create(game)
+    for (let i = 0; i < 64; i++) {
+      if (this.game.board[i] === Disc.EMPTY_POSSIBLE) {
+        this.game.board[i] = Disc.EMPTY
       }
     }
   }
 
-  public placeDisc(index: number, discRole: DiscRole): Disc[] | null {
+  public placeDisc(index: number, discRole: DiscRole): Game | null {
+    if (this.game.end) {
+      return null
+    }
     if (
-      this.board[index] !== Disc.EMPTY &&
-      this.board[index] !== Disc.EMPTY_POSSIBLE
+      this.game.board[index] !== Disc.EMPTY &&
+      this.game.board[index] !== Disc.EMPTY_POSSIBLE
     ) {
       return null
     }
 
-    const newBoard = [...this.board]
+    const newBoard = [...this.game.board]
     const userDisc = DiscRole.getDisc(discRole)
     newBoard[index] = userDisc
     const opponentDisc: Disc =
@@ -30,8 +34,6 @@ export class ReversiBoard {
     const directions = [-1, -1 + 8, 8, 1 + 8, 1, 1 - 8, -8, -1 - 8]
 
     let validMove = false
-
-    let flipped: boolean = false
 
     for (const direction of directions) {
       let currentIndex = index + direction
@@ -53,7 +55,18 @@ export class ReversiBoard {
       }
     }
 
-    return validMove ? newBoard : null
+    if (!validMove) {
+      return null
+    }
+
+    this.game.board = newBoard
+    this.updatePossibleDiscs()
+    this.game.turn = DiscRole.getOpponentDisc(discRole)
+    const discCount = this.countDiscs()
+    this.game.black_num = discCount.black
+    this.game.white_num = discCount.white
+
+    return this.game
   }
 
   private updatePossibleDiscs(): void {
