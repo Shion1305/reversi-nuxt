@@ -3,33 +3,60 @@ const props = defineProps<{ black: number; white: number }>()
 </script>
 
 <template>
-  <div class="scoreboard">
-    <div class="scoreboard">
-      <div class="team1-score">{{ props.black }}</div>
-      <div class="divider">-</div>
-      <div class="team2-score">{{ props.white }}</div>
+  <div class="score-board">
+    <div id="score-left">
+      <div class="square">{{ props.black }}</div>
+      <img alt="" class="frog-image" src="@/assets/imgs/GreenFrog.png" />
+    </div>
+    <p id="middle-bar">-</p>
+    <div id="score-right">
+      <div class="square">{{ props.white }}</div>
+      <img alt="" class="frog-image" src="@/assets/imgs/PinkFrog.png" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.scoreboard {
+.square {
+  width: 100px;
+  height: 100px;
+  border: 1px solid;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: rgba(209, 209, 209, 0.5);
+  text-align: center;
+  font-size: 40px;
+  line-height: 100px;
+}
+
+.score-board {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  background-color: #f5f5f5;
-  padding: 20px;
-  border-radius: 10px;
-}
+  margin: 0 auto;
+  flex-direction: row;
 
-.team1-score,
-.divider,
-.team2-score {
-  margin: 0 10px;
-}
+  #middle-bar {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: 50px;
+  }
 
-.divider {
-  color: #ff0000;
+  #score-left,
+  #score-right {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .frog-image {
+      margin: auto;
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+  }
 }
 </style>
