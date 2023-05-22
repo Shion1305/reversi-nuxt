@@ -1,14 +1,30 @@
-<script setup lang="ts"></script>
+<script lang="ts" setup>
+import axios from 'axios'
+
+const joinGame = async () => {
+  console.log('join game')
+  const gameID = await axios
+    .post('/api/join')
+    .then((res) => {
+      return res.data.game_id
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  if (!gameID) return
+  useRouter().push(`/game/${gameID}`)
+}
+</script>
 
 <template>
   <div class="wrapper">
-    <a>
+    <button @click="joinGame">
       <img src="@/assets/imgs/taikyoku.png" width="500" />
-    </a>
+    </button>
 
-    <a>
+    <button>
       <img src="@/assets/imgs/senseki.png" width="500" />
-    </a>
+    </button>
   </div>
 </template>
 
