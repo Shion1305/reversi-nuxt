@@ -1,6 +1,6 @@
 import admin from '~/server/firebase-admin'
-import { User } from '~/types/user'
 import { Game } from '~/server/model/game'
+import { User } from '~/server/model/user'
 import { DiscRole } from '~/server/model/disc_role'
 import { Disc } from '~/server/model/disc'
 
@@ -33,52 +33,23 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  await db
-    .collection('users')
-    .doc(userID)
-    .update({
-      is_waiting: true
-    })
-    .catch((err) => {
-      console.log('Error updating user', err)
-      return createError({
-        statusCode: 500,
-        statusMessage: 'Error updating user'
-      })
-    })
-
-  const q = await db
-    .collection('users')
-    .orderBy('is_waiting')
-    .where('is_waiting', '==', true)
-    .limit(1)
-    .get()
-  if (q.empty) {
-    const game_id = createRoom(userID)
-    await db.collection('users').doc(userID).update({
-      game_id: game_id,
-      is_waiting: true,
-      in_game: true
-    })
-    return
+  const gameID = await searchForWaitingGame(userID)
+  if (gameID) {
+    return {
+      game_id: gameID
+    }
   }
-  const matchedUser = q.docs[0].data() as User
-  await db.collection('users').doc(q.docs[0].id).update({
-    is_waiting: false,
-    in_game: true
-  })
-  await db.collection('users').doc(userID).update({
-    is_waiting: false,
-    in_game: true,
-    game_id: matchedUser.game_id
-  })
+
+  // 待機中のgameが存在しない場合は新規作成。
+  console.log('Creating new game')
+  const newGameID = await createRoom(userID)
   return {
-    game_id: matchedUser.game_id
+    game_id: newGameID
   }
 })
 
-async function createRoom(userID: string): Promise<string> {
-  let newBoard: Disc[] = []
+async function createRoom(userID: string): Promise<string | null> {
+  const newBoard: Disc[] = []
   for (let i = 0; i < 64; i++) {
     newBoard.push(Disc.EMPTY)
   }
@@ -99,13 +70,60 @@ async function createRoom(userID: string): Promise<string> {
       board: newBoard,
       black_user: userID,
       white_user: '',
-      users: [userID]
+      users: [userID],
+      black_num: 2,
+      white_num: 2
     } as Game)
     .then((doc) => {
       return doc.id
     })
     .catch((err) => {
       console.log('Error creating game', err)
-      return ''
+      return null
     })
+}
+
+// 既に待機中のゲームが存在する場合はそのゲームに参加し、GameIDを返す。
+// 存在しない場合はnullを返す。
+async function searchForWaitingGame(user: string): Promise<string | null> {
+  const awaitingGame = await db
+    .collection('games')
+    .where('white_user', '==', '')
+    .limit(1)
+    .get()
+  if (awaitingGame.empty) {
+    return null
+  }
+  const gameRef = awaitingGame.docs[0].ref
+
+  const result = await db
+    .runTransaction(async (transaction) => {
+      const gameDoc = await transaction.get(gameRef)
+      if (!gameDoc.exists) {
+        return null
+      }
+      const userDoc = await transaction.get(db.collection('users').doc(user))
+      const game = gameDoc.data() as Game
+      game.white_user = user
+      game.users.push(user)
+      transaction.update(gameRef, {
+        white_user: user,
+        users: [game.black_user, game.white_user]
+      })
+      transaction.update(db.collection('users').doc(user), {
+        in_game: true,
+        game_id: gameRef.id
+      })
+    })
+    .then(() => gameRef.id)
+    .catch((err) => {
+      console.log('Transaction failure:', err)
+      return null
+    })
+  if (!result) {
+    console.log('Transaction failure: failed to join game')
+    console.log('Trying again...')
+    return await searchForWaitingGame(user)
+  }
+  return result
 }
