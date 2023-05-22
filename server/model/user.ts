@@ -1,6 +1,6 @@
-interface User{
-    id : string
-    name : string
-    time : Date
-    State : string
+export interface User {
+  id: string
+  in_game: boolean
+  name: string
+  game_id: string
 }
