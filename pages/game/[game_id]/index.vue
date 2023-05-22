@@ -8,6 +8,8 @@ import {
 } from 'firebase/firestore'
 import { Game } from '~/model/game'
 import axios from 'axios'
+import { DiscRole } from '~/model/disc_role'
+import { useLogin } from '~/composables/useLogin'
 
 const data: { gameData: Game } = reactive({
   gameData: {
@@ -20,13 +22,38 @@ const route = useRoute()
 const gameID: string = route.params.game_id as string
 
 // listen to Game from firestore
-console.log('gameID', gameID)
 const db = getFirestore()
 const gameRef = doc(db, 'games', gameID) as DocumentReference<Game>
-onSnapshot(gameRef, (doc) => {
+
+const statusText = ref('')
+const updateStatusText = async (): Promise<string> => {
+  const currentUser = await useLogin().getCurrentUser()
+  let userDiscRole: DiscRole
+  if (currentUser) {
+    if (data.gameData.black_user === currentUser.userID) {
+      userDiscRole = DiscRole.BLACK
+    } else if (data.gameData.white_user === currentUser.userID) {
+      userDiscRole = DiscRole.WHITE
+    }
+  }
+
+  if (data.gameData.white_user === '') {
+    return 'マッチング中...'
+  }
+  if (data.gameData.end) {
+    return 'ゲーム終了'
+  }
+  if (data.gameData.turn === userDiscRole) {
+    return 'あなたの番です'
+  }
+  return '相手の番です'
+}
+
+onSnapshot(gameRef, async (doc) => {
   if (!doc.exists()) useRouter().push('/')
   data.gameData = doc.data() as Game
   data.gameData.id = doc.id
+  statusText.value = await updateStatusText()
 })
 const onPlace = function (row, col) {
   axios.post('/api/game/place', {
@@ -51,7 +78,10 @@ const onGiveup = function () {
 <template>
   <div class="page-frame">
     <div id="result-pane">
-      <div id="opponent-panel">aaaa</div>
+      <div id="status-panel">
+        <img id="" src="@/assets/imgs/frog_with_board_green.png" />
+        <div>{{ statusText }}</div>
+      </div>
       <ScoreBoard
         :black="data.gameData.black_num"
         :white="data.gameData.white_num"
@@ -126,6 +156,26 @@ const onGiveup = function () {
   height: 100%;
 }
 
+#status-panel {
+  position: relative;
+
+  > img {
+    width: 100%;
+    height: auto;
+  }
+
+  > div {
+    position: absolute;
+    width: 80%;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
 .end-frame {
   position: absolute;
   width: 100%;
@@ -137,6 +187,7 @@ const onGiveup = function () {
 
   .popup {
     position: relative;
+
     img {
       width: 500px;
       height: 500px;
