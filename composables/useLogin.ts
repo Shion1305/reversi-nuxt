@@ -4,11 +4,6 @@ import axios from 'axios'
 // ユーザーのログイン状態管理、基本データ管理を行う
 export const useLogin = () => {
   const currentUser = ref<User | null>(null)
-  const signIn = async (username: string) => {
-    currentUser.value = {
-      username
-    }
-  }
   const signOut = () => {
     currentUser.value = null
   }
@@ -31,8 +26,10 @@ export const useLogin = () => {
   }
   const fetchUserInfo = async () => {
     const { data: userInfo } = await axios.get('/api/user/info')
-    currentUser.value = userInfo.value.username
-    console.log(currentUser.value)
+    currentUser.value = {
+      username: userInfo.value.username,
+      userID: userInfo.value.userID
+    }
   }
-  return { signIn, signOut, isSignedIn, getCurrentUser }
+  return { signOut, isSignedIn, getCurrentUser }
 }
