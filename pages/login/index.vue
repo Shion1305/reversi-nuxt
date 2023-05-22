@@ -11,10 +11,10 @@ const loginURL =
   '&scope=openid%20profile%20email'
 </script>
 <template>
-    <div>Welcome to login!!</div>
-    <h1>Login</h1>
-    <div><span>Username: </span><input type="text" v-model="username" /></div>
-    <button @click="signIn">SignIn</button>
+  <div>Welcome to login!!</div>
+  <h1>Login</h1>
+  <div><span>Username: </span><input type="text" v-model="username" /></div>
+  <button @click="signIn">SignIn</button>
 </template>
 
 <style scoped></style>

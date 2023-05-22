@@ -57,7 +57,10 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
   if (!userDoc.exists) {
     const user: User = {
       username: profileInfo.displayName,
-      line_service_id: profileInfo.userId
+      line_service_id: profileInfo.userId,
+      in_game: false,
+      is_waiting: false,
+      game_id: ''
     }
     await db.collection('users').doc(profileInfo.userId).set(user)
   }
