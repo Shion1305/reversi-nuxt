@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 
   const req = await readBody(event)
     .then((body) => {
-      return JSON.parse(body) as PlaceRequest
+      return body as PlaceRequest
     })
     .catch(() => {
       return null
@@ -41,7 +41,11 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  if (game.users.indexOf(userID) === -1) {
+  if (
+    game.users[0] !== userID &&
+    game.users.length === 2 &&
+    game.users[1] !== userID
+  ) {
     return createError({
       statusCode: 403,
       statusMessage: 'Forbidden'
@@ -73,7 +77,14 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  await db.collection('games').doc(game.id).set(newGame)
+  await db.collection('games').doc(req.gameID).update({
+    board: newGame.board,
+    turn: newGame.turn,
+    black_num: newGame.black_num,
+    white_num: newGame.white_num,
+    possible_num: newGame.possible_num,
+    end: newGame.end
+  })
 
   return {
     statusCode: 200
