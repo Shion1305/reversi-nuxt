@@ -6,12 +6,12 @@ const props = defineProps<{ black: number; white: number }>()
   <div class="score-board">
     <div id="score-left">
       <div class="square">{{ props.black }}</div>
-      <img alt="" class="frog-image" src="@/assets/imgs/GreenFrog.png" />
+      <img alt="" class="frog-image" src="@/assets/imgs/black_frog.png" />
     </div>
     <p id="middle-bar">-</p>
     <div id="score-right">
       <div class="square">{{ props.white }}</div>
-      <img alt="" class="frog-image" src="@/assets/imgs/PinkFrog.png" />
+      <img alt="" class="frog-image" src="@/assets/imgs/white_frog.png" />
     </div>
   </div>
 </template>

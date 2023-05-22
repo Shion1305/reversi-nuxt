@@ -20,6 +20,9 @@ jobs:
       - name: "Generate .env"
         run: |
           echo "${{ secrets.ENV_CONTENTS }}" > .env
+      - name: "create gcloud-credential.json"
+        run: |
+          echo "${{ secrets.GCLOUD_CREDENTIAL }}" > ./gcloud-credential.json
       - name: "Extract branch name"
         id: branch-name
         shell: bash

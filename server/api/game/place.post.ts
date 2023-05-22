@@ -86,16 +86,32 @@ export default defineEventHandler(async (event) => {
     end: newGame.end
   })
 
-  if (game.end) {
+  if (newGame.end) {
     await db.runTransaction(async (transaction) => {
-      transaction.update(db.collection('users').doc(game.black_user), {
+      await transaction.update(db.collection('users').doc(game.black_user), {
         in_game: false,
         game_id: ''
       })
-      transaction.update(db.collection('users').doc(game.white_user), {
+      await transaction.update(db.collection('users').doc(game.white_user), {
         in_game: false,
         game_id: ''
       })
+      const result = {
+        black_user: game.black_user,
+        white_user: game.white_user,
+        black_num: newGame.black_num,
+        white_num: newGame.white_num,
+        winner:
+          newGame.white_num > newGame.black_num
+            ? newGame.white_user
+            : newGame.white_num < newGame.black_num
+            ? newGame.black_user
+            : 'draw',
+        users: game.users,
+        time: new Date(),
+        surrender: false
+      } as Result
+      await transaction.create(db.collection('results').doc(), result)
     })
   }
   return {

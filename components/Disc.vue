@@ -15,12 +15,12 @@ const props = withDefaults(
   <div class="disc">
     <img
       v-if="props.disc === Disc.BLACK"
-      src="@/assets/imgs/GreenFrog.png"
+      src="@/assets/imgs/black_frog.png"
       alt="disc"
     />
     <img
       v-else-if="props.disc === Disc.WHITE"
-      src="@/assets/imgs/PinkFrog.png"
+      src="@/assets/imgs/white_frog.png"
       alt="disc"
     />
     <div v-else-if="props.disc === Disc.EMPTY_POSSIBLE" id="hint" />
