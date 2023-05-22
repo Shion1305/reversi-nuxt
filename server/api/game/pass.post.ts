@@ -39,7 +39,11 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  if (game.users.indexOf(userID) === -1) {
+  if (
+    game.users[0] !== userID &&
+    game.users.length === 2 &&
+    game.users[1] !== userID
+  ) {
     return createError({
       statusCode: 403,
       statusMessage: 'Forbidden'
