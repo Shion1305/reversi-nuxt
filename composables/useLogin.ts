@@ -27,8 +27,8 @@ export const useLogin = () => {
   const fetchUserInfo = async () => {
     const { data: userInfo } = await axios.get('/api/user/info')
     currentUser.value = {
-      username: userInfo.value.username,
-      userID: userInfo.value.userID
+      username: userInfo.name,
+      userID: userInfo.userID
     }
   }
   return { signOut, isSignedIn, getCurrentUser }
