@@ -13,11 +13,7 @@ function onLoginClick() {
     <div class="caution">
       <img src="@/assets/imgs/caution.png" alt="caution" />
     </div>
-    <input
-      type="text"
-      class="caution_sentence"
-      placeholder="本当に投了しますか？"
-    />
+    <h1 class="caution_sentence">本当に投了しますか？</h1>
     <div class="btns">
       <div class="giveup">
         <img src="@/assets/imgs/onlyboard.png" alt="giveup" />
