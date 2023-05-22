@@ -28,7 +28,9 @@ const gameRef = doc(db, 'games', gameID) as DocumentReference<Game>
 const statusText = ref('')
 const blackUsername = ref('')
 const whiteUsername = ref('')
+let yourTurn = false
 const updateStatusText = async (): Promise<string> => {
+  yourTurn = false
   const currentUser = await useLogin().getCurrentUser()
   let userDiscRole: DiscRole
   if (currentUser) {
@@ -46,6 +48,7 @@ const updateStatusText = async (): Promise<string> => {
     return 'ゲーム終了'
   }
   if (data.gameData.turn === userDiscRole) {
+    yourTurn = true
     return 'あなたの番です'
   }
   return '相手の番です'
@@ -95,6 +98,7 @@ onSnapshot(gameRef, async (doc) => {
   await updateUsername()
 })
 const onPlace = function (row, col) {
+  if (!yourTurn) return
   axios.post('/api/game/place', {
     gameID: gameID,
     index: row * 8 + col
