@@ -106,16 +106,58 @@ export class ReversiBoard {
   }
 
   private updatePossibleDiscs(): void {
+    // 順番を反転させて判定を行う
     for (let i = 0; i < 64; i++) {
       if (this.game.board[i] === Disc.EMPTY_POSSIBLE) {
         this.game.board[i] = Disc.EMPTY
       }
     }
 
+    const userDisc = DiscRole.getDisc(this.game.turn)
     const opponentDisc = DiscRole.getDisc(
       DiscRole.getOpponentDisc(this.game.turn)
     )
 
+    for (let i = 0; i < 64; i++) {
+      if (this.game.board[i] !== Disc.EMPTY) {
+        continue
+      }
+
+      const originX = i % 8
+      const originY = Math.floor(i / 8)
+
+      for (const direction of directions) {
+        let currentX = originX + direction[0]
+        let currentY = originY + direction[1]
+        let flipped = false
+
+        while (
+          this.game.board[currentX + currentY * 8] === userDisc &&
+          currentX >= 0 &&
+          currentX < 8 &&
+          currentY >= 0 &&
+          currentY < 8
+        ) {
+          currentX += direction[0]
+          currentY += direction[1]
+          flipped = true
+        }
+
+        if (
+          flipped &&
+          this.game.board[currentX + currentY * 8] === opponentDisc
+        ) {
+          this.game.board[i] = Disc.EMPTY_POSSIBLE
+        }
+      }
+    }
+  }
+
+  public checkOpponentDiscPossible(): boolean {
+    const currentDisc = DiscRole.getDisc(this.game.turn)
+    const opponentDisc = DiscRole.getDisc(
+      DiscRole.getOpponentDisc(this.game.turn)
+    )
     for (let i = 0; i < 64; i++) {
       if (this.game.board[i] !== Disc.EMPTY) {
         continue
@@ -143,48 +185,7 @@ export class ReversiBoard {
 
         if (
           flipped &&
-          this.game.board[currentX + currentY * 8] ===
-            DiscRole.getDisc(this.game.turn)
-        ) {
-          this.game.board[i] = Disc.EMPTY_POSSIBLE
-        }
-      }
-    }
-  }
-
-  public checkOpponentDiscPossible(): boolean {
-    const currentDisc = DiscRole.getDisc(this.game.turn)
-    const opponentDisc = DiscRole.getDisc(
-      DiscRole.getOpponentDisc(this.game.turn)
-    )
-    for (let i = 0; i < 64; i++) {
-      if (this.game.board[i] !== Disc.EMPTY) {
-        continue
-      }
-
-      const originX = i % 8
-      const originY = Math.floor(i / 8)
-
-      for (const direction of directions) {
-        let currentX = originX + direction[0]
-        let currentY = originY + direction[1]
-        let flipped = false
-
-        while (
-          this.game.board[currentX + currentY * 8] === currentDisc &&
-          currentX >= 0 &&
-          currentX < 8 &&
-          currentY >= 0 &&
-          currentY < 8
-        ) {
-          currentX += direction[0]
-          currentY += direction[1]
-          flipped = true
-        }
-
-        if (
-          flipped &&
-          this.game.board[currentX + currentY * 8] === opponentDisc
+          this.game.board[currentX + currentY * 8] === currentDisc
         ) {
           return true
         }
