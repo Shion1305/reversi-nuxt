@@ -27,10 +27,9 @@ export default defineEventHandler(async (event) => {
   const user: User = userDoc.data() as User
 
   if (user.in_game) {
-    return createError({
-      statusCode: 401,
-      statusMessage: 'User is in the game'
-    })
+    return {
+      game_id: user.game_id
+    }
   }
 
   const gameID = await searchForWaitingGame(userID)
@@ -62,20 +61,26 @@ async function createRoom(userID: string): Promise<string | null> {
   newBoard[34] = Disc.EMPTY_POSSIBLE
   newBoard[43] = Disc.EMPTY_POSSIBLE
 
+  const newGameRef = await db.collection('games').doc()
   return await db
-    .collection('games')
-    .add({
-      turn: DiscRole.BLACK,
-      end: false,
-      board: newBoard,
-      black_user: userID,
-      white_user: '',
-      users: [userID],
-      black_num: 2,
-      white_num: 2
-    } as Game)
-    .then((doc) => {
-      return doc.id
+    .runTransaction(async (transaction) => {
+      transaction.create(newGameRef, {
+        turn: DiscRole.BLACK,
+        end: false,
+        board: newBoard,
+        black_user: userID,
+        white_user: '',
+        users: [userID],
+        black_num: 2,
+        white_num: 2
+      })
+      transaction.update(db.collection('users').doc(userID), {
+        in_game: true,
+        game_id: newGameRef.id
+      })
+    })
+    .then(() => {
+      return newGameRef.id
     })
     .catch((err) => {
       console.log('Error creating game', err)
@@ -110,7 +115,7 @@ async function searchForWaitingGame(user: string): Promise<string | null> {
         white_user: user,
         users: [game.black_user, game.white_user]
       })
-      transaction.update(db.collection('users').doc(user), {
+      transaction.update(userDoc.ref, {
         in_game: true,
         game_id: gameRef.id
       })
