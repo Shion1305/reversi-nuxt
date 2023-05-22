@@ -1,7 +1,7 @@
 import { AccessTokenResponse } from '~/types/response/line/accessTokenResponse'
 import { UserProfileResponse } from '~/types/response/line/userProfileResponse'
 import admin from '~/server/firebase-admin'
-import { User } from '~/types/user'
+import { User } from '~/server/model/user'
 import { generateToken } from '~/server/jwt'
 import { H3Event } from 'h3'
 import axios from 'axios'
@@ -56,10 +56,9 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
   const userDoc = await db.collection('users').doc(profileInfo.userId).get()
   if (!userDoc.exists) {
     const user: User = {
-      username: profileInfo.displayName,
-      line_service_id: profileInfo.userId,
+      name: profileInfo.displayName,
+      line_id: profileInfo.userId,
       in_game: false,
-      is_waiting: false,
       game_id: ''
     }
     await db.collection('users').doc(profileInfo.userId).set(user)
