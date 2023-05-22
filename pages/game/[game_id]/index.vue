@@ -28,9 +28,6 @@ onSnapshot(gameRef, (doc) => {
   data.gameData = doc.data() as Game
   data.gameData.id = doc.id
 })
-const logClick = function (row, col) {
-  console.log(row, col)
-}
 const onPlace = function (row, col) {
   axios.post('/api/game/place', {
     gameID: gameID,
@@ -38,8 +35,14 @@ const onPlace = function (row, col) {
   })
 }
 
-const passAction = function () {
+const onPass = function () {
   axios.post('/api/game/pass', {
+    gameID: gameID
+  })
+}
+
+const onGiveup = function () {
+  axios.post('/api/game/giveup', {
     gameID: gameID
   })
 }
@@ -53,13 +56,20 @@ const passAction = function () {
         :black="data.gameData.black_num"
         :white="data.gameData.white_num"
       />
-      <button @click="passAction">PASS</button>
+      <button class="action-button" @click="onPass">PASS</button>
+      <button class="action-button" @click="onGiveup">投了する</button>
     </div>
     <div id="board-pane">
       <div id="board-container">
         <ReversiBoard :board="data.gameData.board" @cell-click="onPlace" />
       </div>
     </div>
+    <!--    <div class="end-frame">-->
+    <!--      <div class="popup">-->
+    <!--        <img alt="" src="@/assets/imgs/frog_with_board_green.png" />-->
+    <!--        <h1>ゲームが<br />終了しました</h1>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 </template>
 
@@ -70,6 +80,16 @@ const passAction = function () {
   height: 100%;
   width: 100%;
   align-items: center;
+}
+
+.action-button {
+  width: calc(100% - 20px);
+  height: 50px;
+  font-size: 1.5em;
+  background-color: #e2e2e2;
+  border: none;
+  border-radius: 10px;
+  margin: 5px 10px;
 }
 
 #board-pane {
@@ -104,5 +124,34 @@ const passAction = function () {
   right: 0;
   width: 400px;
   height: 100%;
+}
+
+.end-frame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .popup {
+    position: relative;
+    img {
+      width: 500px;
+      height: 500px;
+    }
+
+    h1 {
+      position: absolute;
+      top: 200px;
+      left: 50px;
+      width: 400px;
+      text-align: center;
+      font-size: 50px;
+      color: #330000;
+      text-align: center;
+    }
+  }
 }
 </style>
