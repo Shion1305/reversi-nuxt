@@ -1,19 +1,12 @@
 <script setup lang="ts">
-const username: string = 'test'
-
-const { signIn } = useLogin()
-
-function onLoginClick() {
-  if (username === '') return
-  signIn(username)
-}
+const authURL = useRuntimeConfig().public.authURL
 </script>
 <template>
   <a>
     <div class="relative">
       <img src="@/assets/imgs/frog_with_board_green.png" />
       <div class="loginbtn">
-        <a href="">
+        <a :href="authURL">
           <img src="@/assets/imgs/btn_login_hover.png" class="absolute" />
         </a>
       </div>
