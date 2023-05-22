@@ -86,6 +86,18 @@ export default defineEventHandler(async (event) => {
     end: newGame.end
   })
 
+  if (game.end) {
+    await db.runTransaction(async (transaction) => {
+      transaction.update(db.collection('users').doc(game.black_user), {
+        in_game: false,
+        game_id: ''
+      })
+      transaction.update(db.collection('users').doc(game.white_user), {
+        in_game: false,
+        game_id: ''
+      })
+    })
+  }
   return {
     statusCode: 200
   }
