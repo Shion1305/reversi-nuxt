@@ -32,6 +32,6 @@ export default defineEventHandler(async (event) => {
   }
   return {
     userID: event.context.userID,
-    username: user
+    username: user as string
   }
 })
