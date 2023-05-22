@@ -6,6 +6,7 @@ const config = useRuntimeConfig()
 const credential = JSON.parse(
   fs.readFileSync(config.firebase_admin.certPath, 'utf8')
 )
+console.log(credential)
 admin.initializeApp({
   credential: admin.credential.cert(credential as admin.ServiceAccount)
 })
