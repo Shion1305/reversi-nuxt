@@ -2,8 +2,8 @@ import { User } from '~/types/user'
 import axios from 'axios'
 
 // ユーザーのログイン状態管理、基本データ管理を行う
+const currentUser = ref<User | null>(null)
 export const useLogin = () => {
-  const currentUser = ref<User | null>(null)
   const signOut = () => {
     currentUser.value = null
   }
@@ -18,7 +18,7 @@ export const useLogin = () => {
         return false
       })
   }
-  const getCurrentUser = async () => {
+  const getCurrentUser = async (): Promise<User | null> => {
     if (currentUser.value == null) {
       await fetchUserInfo()
     }
