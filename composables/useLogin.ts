@@ -16,7 +16,7 @@ export const useLogin = () => {
     return await axios
       .get('/api/auth-check')
       .then((res) => {
-        return res.data.status === 200
+        return res.status === 200
       })
       .catch((err) => {
         console.log(err)
