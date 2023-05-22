@@ -26,6 +26,8 @@ const db = getFirestore()
 const gameRef = doc(db, 'games', gameID) as DocumentReference<Game>
 
 const statusText = ref('')
+const blackUsername = ref('')
+const whiteUsername = ref('')
 const updateStatusText = async (): Promise<string> => {
   const currentUser = await useLogin().getCurrentUser()
   let userDiscRole: DiscRole
@@ -49,11 +51,48 @@ const updateStatusText = async (): Promise<string> => {
   return '相手の番です'
 }
 
+const updateUsername = async () => {
+  if (blackUsername.value !== '' && whiteUsername.value !== '') return
+  const currentUser = await useLogin().getCurrentUser()
+  if (currentUser) {
+    if (data.gameData.black_user === currentUser.userID) {
+      blackUsername.value = currentUser.username
+      if (data.gameData.white_user !== '') {
+        whiteUsername.value = await axios
+          .get('/api/user/get-name?targetUser=' + data.gameData.white_user)
+          .then((res) => {
+            return res.data.name as string
+          })
+          .catch((error) => {
+            console.log(error)
+            return ''
+          })
+      }
+    } else if (data.gameData.white_user === currentUser.userID) {
+      whiteUsername.value = currentUser.username
+      if (data.gameData.black_user !== '') {
+        blackUsername.value = async () => {
+          return await axios
+            .get('/api/user/get-name?targetUser=' + data.gameData.black_user)
+            .then((res) => {
+              return res.data.name as string
+            })
+            .catch((error) => {
+              console.log(error)
+              return ''
+            })
+        }
+      }
+    }
+  }
+}
+
 onSnapshot(gameRef, async (doc) => {
   if (!doc.exists()) useRouter().push('/')
   data.gameData = doc.data() as Game
   data.gameData.id = doc.id
   statusText.value = await updateStatusText()
+  await updateUsername()
 })
 const onPlace = function (row, col) {
   axios.post('/api/game/place', {
@@ -84,7 +123,9 @@ const onGiveup = function () {
       </div>
       <ScoreBoard
         :black="data.gameData.black_num"
+        :black_user="blackUsername as string"
         :white="data.gameData.white_num"
+        :white_user="whiteUsername as string"
       />
       <button class="action-button" @click="onPass">PASS</button>
       <button class="action-button" @click="onGiveup">投了する</button>
