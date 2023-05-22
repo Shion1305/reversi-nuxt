@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     .catch(() => {
       return null
     })
-  if (!req || !req.gameID || !req.index) {
+  if (!req || !req.gameID || req.index === undefined || req.index === null) {
     return createError({
       statusCode: 400,
       statusMessage: 'Bad Request'

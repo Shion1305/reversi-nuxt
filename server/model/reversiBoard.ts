@@ -97,7 +97,9 @@ export class ReversiBoard {
     this.game.possible_num = discCount.possible
 
     if (discCount.possible === 0) {
+      console.log('no possible')
       if (!this.checkOpponentDiscPossible()) {
+        console.log('end')
         this.game.end = true
       }
     }
@@ -144,6 +146,10 @@ export class ReversiBoard {
         }
 
         if (
+          currentX >= 0 &&
+          currentX < 8 &&
+          currentY >= 0 &&
+          currentY < 8 &&
           flipped &&
           this.game.board[currentX + currentY * 8] === opponentDisc
         ) {
@@ -184,6 +190,10 @@ export class ReversiBoard {
         }
 
         if (
+          currentX >= 0 &&
+          currentX < 8 &&
+          currentY >= 0 &&
+          currentY < 8 &&
           flipped &&
           this.game.board[currentX + currentY * 8] === currentDisc
         ) {
