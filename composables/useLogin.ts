@@ -13,9 +13,15 @@ export const useLogin = () => {
     currentUser.value = null
   }
   const isSignedIn = async () => {
-    axios.get('/api/auth-check').then((res) => {
-      return res.data.status === 200
-    })
+    return await axios
+      .get('/api/auth-check')
+      .then((res) => {
+        return res.data.status === 200
+      })
+      .catch((err) => {
+        console.log(err)
+        return false
+      })
   }
   const getCurrentUser = async () => {
     if (currentUser.value == null) {
