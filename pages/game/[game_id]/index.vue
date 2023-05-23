@@ -143,8 +143,22 @@ const onGiveup = function () {
         :white="data.gameData.white_num"
         :white_user="whiteUsername as string"
       />
-      <button class="action-button" @click="onPass">PASS</button>
-      <button class="action-button" @click="onGiveup">投了する</button>
+      <!--      <button class="action-button" @click="onPass">PASS</button>-->
+      <!--      <button class="action-button" @click="onGiveup">投了する</button>-->
+      <button
+        class="action-button"
+        @click="useRouter().push('/')"
+        v-if="data.gameData.end"
+      >
+        ホームに戻る
+      </button>
+      <button
+        class="action-button"
+        @click="useRouter().push('/record')"
+        v-if="data.gameData.end"
+      >
+        戦績を確認する
+      </button>
     </div>
     <div id="board-pane">
       <div id="board-container">
