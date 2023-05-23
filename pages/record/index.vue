@@ -168,7 +168,7 @@ if (recordsData?.records) {
       </table>
     </div>
     <div class="m1">
-      <p><font size="5">直近の戦績</font></p>
+      <p><font size="5">過去の戦績</font></p>
     </div>
     <div class="m2">
       <p><font size="5">相手毎の通算戦績</font></p>

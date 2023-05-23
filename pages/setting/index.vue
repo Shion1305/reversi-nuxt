@@ -1,12 +1,31 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import axios from 'axios'
+
+const nameRef = ref('')
+
+const changeName = async () => {
+  console.log('change name')
+  console.log(nameRef.value)
+  await raxios
+    .post('/api/user/change-name', {
+      name: nameRef.value
+    })
+    .then((res) => {
+      console.log(res.data)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+</script>
 
 <template>
   <div class="relative">
     <img src="@/assets/imgs/frog_with_board_green.png" alt="" class="frog" />
     <h1 class="absolute01">名前は？</h1>
     <img src="@/assets/imgs/otamajakusi.png" alt="" />
-    <input class="absolute02" type="text" />
-    <input class="absolute03" type="submit" value="OK" />
+    <input class="absolute02" type="text" v-model="nameRef" />
+    <input class="absolute03" type="submit" value="OK" @click="changeName" />
   </div>
 </template>
 
