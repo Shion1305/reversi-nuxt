@@ -88,17 +88,15 @@ const updateUsername = async () => {
     } else if (data.gameData.white_user === currentUser.userID) {
       whiteUsername.value = currentUser.username
       if (data.gameData.black_user !== '') {
-        blackUsername.value = await async () => {
-          return await axios
-            .get('/api/user/get-name?targetUser=' + data.gameData.black_user)
-            .then((res) => {
-              return res.data.name as string
-            })
-            .catch((error) => {
-              console.log(error)
-              return ''
-            })
-        }
+        blackUsername.value = await axios
+          .get('/api/user/get-name?targetUser=' + data.gameData.black_user)
+          .then((res) => {
+            return res.data.name as string
+          })
+          .catch((error) => {
+            console.log(error)
+            return ''
+          })
       }
     }
   }
