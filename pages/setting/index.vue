@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import axios from 'axios'
 
-const nameRef = ref('')
+const user = await useLogin().getCurrentUser()
+const nameRef = ref(user?.username)
 
 const changeName = async () => {
   console.log('change name')
   console.log(nameRef.value)
-  await raxios
+  await axios
     .post('/api/user/change-name', {
       name: nameRef.value
     })
@@ -27,6 +28,7 @@ const changeName = async () => {
     <input class="absolute02" type="text" v-model="nameRef" />
     <input class="absolute03" type="submit" value="OK" @click="changeName" />
   </div>
+  <NuxtLink to="/">戻る</NuxtLink>
 </template>
 
 <style scoped>
