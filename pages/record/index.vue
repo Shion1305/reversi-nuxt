@@ -206,7 +206,7 @@ if (recordsData?.records) {
 
 .table2 {
   position: absolute;
-  left: 580px;
+  right: 0;
   bottom: 50px;
   overflow-y: scroll;
   width: 642px;
