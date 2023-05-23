@@ -1,35 +1,40 @@
-<script setup lang="ts">
-const username: string = 'test'
+<script lang="ts" setup>
+import axios from 'axios'
 
-const { signIn } = useLogin()
-function onLoginClick() {
-  if (username === '') return
-  signIn(username)
+const joinGame = async () => {
+  console.log('join game')
+  const gameID = await axios
+    .post('/api/join')
+    .then((res) => {
+      return res.data.game_id
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  if (!gameID) return
+  useRouter().push(`/game/${gameID}`)
+}
+
+const goRecord = () => {
+  useRouter().push('/record')
 }
 </script>
+
 <template>
-    <a>
-        <div class="relative">
-            <img src="@/assets/imgs/frog_with_board_green.png">
-            <div class="loginbtn"><img src="@/assets/imgs/btn_login_hover.png" class="absolute"></div>
-        </div>
-    </a>
+  <div class="wrapper">
+    <button @click="joinGame">
+      <img src="@/assets/imgs/taikyoku.png" width="500" />
+    </button>
+
+    <button @click="goRecord">
+      <img src="@/assets/imgs/senseki.png" width="500" />
+    </button>
+  </div>
 </template>
 
 <style scoped>
-
-.relative {
-    position: relative;
-    text-align: center;
-}
-.loginbtn img{
-    width: 300px;
-}
-
-.absolute {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.wrapper {
+  display: flex;
+  justify-content: space-around;
 }
 </style>

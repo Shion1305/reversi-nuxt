@@ -9,7 +9,8 @@ export default defineNuxtConfig({
         authDomain: process.env.FIREBASE_AUTH_DOMAIN,
         projectId: process.env.FIREBASE_PROJECT_ID,
         appId: process.env.FIREBASE_APP_ID
-      }
+      },
+      authURL: process.env.AUTH_URL
     },
     line: {
       clientID: process.env.LINE_CLIENT_ID,

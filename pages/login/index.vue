@@ -1,20 +1,33 @@
-<script setup>
-const config = useRuntimeConfig()
-
-const loginURL =
-  'https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=' +
-  config.line.clientID +
-  '&redirect_uri=' +
-  config.line.callbackURI +
-  '&state=' +
-  'test111' +
-  '&scope=openid%20profile%20email'
+<script setup lang="ts">
+const authURL = useRuntimeConfig().public.authURL
 </script>
 <template>
-    <div>Welcome to login!!</div>
-    <h1>Login</h1>
-    <div><span>Username: </span><input type="text" v-model="username" /></div>
-    <button @click="signIn">SignIn</button>
+  <a>
+    <div class="relative">
+      <img src="@/assets/imgs/frog_with_board_green.png" />
+      <div class="loginbtn">
+        <a :href="authURL">
+          <img src="@/assets/imgs/btn_login_hover.png" class="absolute" />
+        </a>
+      </div>
+    </div>
+  </a>
 </template>
 
-<style scoped></style>
+<style scoped>
+.relative {
+  position: relative;
+  text-align: center;
+}
+
+.loginbtn img {
+  width: 300px;
+}
+
+.absolute {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>

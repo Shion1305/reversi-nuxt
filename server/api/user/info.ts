@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
         if (!user) {
           return null
         }
-        return user.username
+        return user.name
       }
     })
     .catch((err) => {
@@ -38,6 +38,6 @@ export default defineEventHandler(async (event) => {
   }
   return {
     userID: event.context.userID,
-    username: user
+    name: user
   }
 })

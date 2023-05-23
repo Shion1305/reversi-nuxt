@@ -1,17 +1,35 @@
 import { User } from '~/types/user'
+import axios from 'axios'
 
 // ユーザーのログイン状態管理、基本データ管理を行う
+const currentUser = ref<User | null>(null)
 export const useLogin = () => {
-  const currentUser = ref<User | null>(null)
-  const signIn = async (username: string) => {
-    currentUser.value = {
-      username,
-      line_service_id: ''
-    }
-  }
   const signOut = () => {
     currentUser.value = null
   }
-  const isSignedIn = () => currentUser.value != null
-  return { signIn, signOut, isSignedIn }
+  const isSignedIn = async () => {
+    return await axios
+      .get('/api/auth-check')
+      .then((res) => {
+        return res.status === 200
+      })
+      .catch((err) => {
+        console.log(err)
+        return false
+      })
+  }
+  const getCurrentUser = async (): Promise<User | null> => {
+    if (currentUser.value == null) {
+      await fetchUserInfo()
+    }
+    return currentUser.value
+  }
+  const fetchUserInfo = async () => {
+    const { data: userInfo } = await axios.get('/api/user/info')
+    currentUser.value = {
+      username: userInfo.name,
+      userID: userInfo.userID
+    }
+  }
+  return { signOut, isSignedIn, getCurrentUser }
 }

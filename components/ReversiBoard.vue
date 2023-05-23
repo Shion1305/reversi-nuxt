@@ -23,13 +23,21 @@ const emits =
   <div class="board">
     <div v-for="(row, index1) in boardRows" :key="row.index" class="board-row">
       <div v-for="(s, index2) in row" class="board-cell">
-        <Disc :disc="s" @click="emits('cell-click', index1, index2)" />
+        <Disc
+          :disc="s"
+          @click="
+            () => {
+              if (s !== 2) return
+              emits('cell-click', index1, index2 as number)
+            }
+          "
+        />
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .board {
   aspect-ratio: 1;
   display: grid;
