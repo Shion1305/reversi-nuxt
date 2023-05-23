@@ -45,7 +45,21 @@ const updateStatusText = async (): Promise<string> => {
     return 'マッチング中...'
   }
   if (data.gameData.end) {
-    return 'ゲーム終了'
+    if (data.gameData.black_num > data.gameData.white_num) {
+      if (userDiscRole === DiscRole.BLACK) {
+        return 'あなたの勝ちです'
+      } else {
+        return 'あなたの負けです'
+      }
+    } else if (data.gameData.black_num < data.gameData.white_num) {
+      if (userDiscRole === DiscRole.BLACK) {
+        return 'あなたの負けです'
+      } else {
+        return 'あなたの勝ちです'
+      }
+    } else {
+      return '引き分けです'
+    }
   }
   if (data.gameData.turn === userDiscRole) {
     yourTurn = true
