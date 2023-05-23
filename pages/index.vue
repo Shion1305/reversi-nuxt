@@ -12,7 +12,7 @@ const joinGame = async () => {
       console.log(error)
     })
   if (!gameID) return
-  useRouter().push(`/game/${gameID}`)
+  await useRouter().push(`/game/${gameID}`)
 }
 
 const goRecord = () => {

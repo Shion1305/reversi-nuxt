@@ -1,20 +1,22 @@
 <script lang="ts" setup>
 import axios from 'axios'
 
+const user = await useLogin().getCurrentUser()
+const myID = user!!.userID
+
 const records = await axios
   .get('/api/record/get-record')
   .then((res) => {
     console.log(res.data)
     if (!res.data.records) {
       console.log('invalid response')
+      return []
     }
+    return res.data.records as Result[]
   })
   .catch((error) => {
     return null
   })
-
-const user = await useLogin().getCurrentUser()
-const myID = user?.userID
 
 const opponentName = async (record: Result) => {
   let opponentID
@@ -23,9 +25,20 @@ const opponentName = async (record: Result) => {
   } else {
     opponentID = record.black_user
   }
-  axios.get('/api/user/get-name?targetUser=' + opponentID).then((res) => {
-    return res.data.name as string
-  })
+  const username = await axios
+    .get('/api/user/get-name?targetUser=' + opponentID)
+    .then((res) => {
+      console.log(res.data.name)
+      return res.data.name as string
+    })
+  console.log(username)
+  return username
+}
+
+if (records) {
+  for (let i = 0; i < records.length; i++) {
+    records[i].opponentName = await opponentName(records[i])
+  }
 }
 </script>
 
@@ -51,11 +64,11 @@ const opponentName = async (record: Result) => {
           <th>相手</th>
         </tr>
 
-        <tr v-for="r in records as Result[]" height="40">
-          <td>{{ opponentName(r) }}</td>
-          <td>{{ r.winner == myID }}</td>
-          <td>６０</td>
-          <td>　４</td>
+        <tr v-for="r in records as any[]" height="40">
+          <td>{{ r.opponentName }}</td>
+          <td>{{ r.winner === myID }}</td>
+          <td>{{ r.black_user === myID ? r.black_num : r.white_num }}</td>
+          <td>{{ r.black_user === myID ? r.white_num : r.black_num }}</td>
         </tr>
       </table>
     </div>
