@@ -16,6 +16,15 @@ export default defineEventHandler(async (event) => {
       })
       return results
     })
+  const wins = results.filter((result) => {
+    return result.winner === event.context.userID
+  }).length
+  const loses = results.filter((result) => {
+    return result.winner !== event.context.userID
+  }).length
+  const draws = results.filter((result) => {
+    return result.winner === 'draw'
+  }).length
   // for (const result of results) {
   //   const blackUser = await db
   //     .collection('users')
@@ -29,6 +38,9 @@ export default defineEventHandler(async (event) => {
   //   result.white_user = whiteUser.docs[0].data().name
   // }
   return {
-    records: results
+    records: results,
+    wins: wins,
+    loses: loses,
+    draws: draws
   }
 })

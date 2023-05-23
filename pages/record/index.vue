@@ -4,15 +4,31 @@ import axios from 'axios'
 const user = await useLogin().getCurrentUser()
 const myID = user!!.userID
 
-const records = await axios
+const recordsData: {
+  records: Result[]
+  wins: number
+  loses: number
+  draws: number
+} | null = await axios
   .get('/api/record/get-record')
   .then((res) => {
     console.log(res.data)
     if (!res.data.records) {
       console.log('invalid response')
-      return []
+      return null
     }
-    return res.data.records as Result[]
+    console.log({
+      records: res.data.records as Result[],
+      wins: res.data.wins as number,
+      loses: res.data.loses as number,
+      draws: res.data.draws as number
+    })
+    return {
+      records: res.data.records as Result[],
+      wins: res.data.wins as number,
+      loses: res.data.loses as number,
+      draws: res.data.draws as number
+    }
   })
   .catch((error) => {
     return null
@@ -20,7 +36,7 @@ const records = await axios
 
 const opponentName = async (record: Result) => {
   let opponentID
-  if (record.black_user === myID) {
+  if (record.black_user == myID) {
     opponentID = record.white_user
   } else {
     opponentID = record.black_user
@@ -35,9 +51,33 @@ const opponentName = async (record: Result) => {
   return username
 }
 
-if (records) {
-  for (let i = 0; i < records.length; i++) {
-    records[i].opponentName = await opponentName(records[i])
+const recordsTable:
+  | {
+      opponentName: string
+      result: string
+      userDiscNum: number
+      opponentDiscNum: number
+    }[] = []
+if (recordsData?.records) {
+  console.log(recordsData.records)
+  for (let i = 0; i < recordsData.records.length; i++) {
+    recordsTable.push({
+      opponentName: await opponentName(recordsData.records[i]),
+      result:
+        recordsData.records[i].winner === myID
+          ? '勝ち'
+          : recordsData.records[i].winner === 'draw'
+          ? '引き分け'
+          : '負け',
+      userDiscNum:
+        recordsData.records[i].black_user === myID
+          ? recordsData.records[i].black_num
+          : recordsData.records[i].white_num,
+      opponentDiscNum:
+        recordsData.records[i].black_user !== myID
+          ? recordsData.records[i].black_num
+          : recordsData.records[i].white_num
+    })
   }
 }
 </script>
@@ -64,11 +104,11 @@ if (records) {
           <th>相手</th>
         </tr>
 
-        <tr v-for="r in records as any[]" height="40">
+        <tr v-for="r in recordsTable as any[]" height="40">
           <td>{{ r.opponentName }}</td>
-          <td>{{ r.winner === myID }}</td>
-          <td>{{ r.black_user === myID ? r.black_num : r.white_num }}</td>
-          <td>{{ r.black_user === myID ? r.white_num : r.black_num }}</td>
+          <td>{{ r.result }}</td>
+          <td>{{ r.userDiscNum }}</td>
+          <td>{{ r.opponentDiscNum }}</td>
         </tr>
       </table>
     </div>
