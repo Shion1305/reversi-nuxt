@@ -90,8 +90,14 @@ if (recordsData?.records) {
       </div>
       <div class="g2">
         <p><font size="5">通算戦績</font></p>
-        <p><font size="30">勝ち:64 負け:16</font></p>
-        <p><font size="30">引き分け:0 投了:0</font></p>
+        <p>
+          <font size="30"
+            >勝ち:{{ recordsData?.wins }} 負け:{{ recordsData?.loses }}</font
+          >
+        </p>
+        <p>
+          <font size="30">引き分け:{{ recordsData?.draws }} 投了:0</font>
+        </p>
       </div>
     </div>
 
