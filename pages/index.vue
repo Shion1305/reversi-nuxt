@@ -14,6 +14,10 @@ const joinGame = async () => {
   if (!gameID) return
   useRouter().push(`/game/${gameID}`)
 }
+
+const goRecord = () => {
+  useRouter().push('/record')
+}
 </script>
 
 <template>
@@ -22,7 +26,7 @@ const joinGame = async () => {
       <img src="@/assets/imgs/taikyoku.png" width="500" />
     </button>
 
-    <button>
+    <button @click="goRecord">
       <img src="@/assets/imgs/senseki.png" width="500" />
     </button>
   </div>
