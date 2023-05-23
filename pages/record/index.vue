@@ -51,13 +51,12 @@ const opponentName = async (record: Result) => {
   return username
 }
 
-const recordsTable:
-  | {
-      opponentName: string
-      result: string
-      userDiscNum: number
-      opponentDiscNum: number
-    }[] = []
+const recordsTable: {
+  opponentName: string
+  result: string
+  userDiscNum: number
+  opponentDiscNum: number
+}[] = []
 if (recordsData?.records) {
   console.log(recordsData.records)
   for (let i = 0; i < recordsData.records.length; i++) {
@@ -78,6 +77,37 @@ if (recordsData?.records) {
           ? recordsData.records[i].black_num
           : recordsData.records[i].white_num
     })
+  }
+}
+const opponentsPerData: {
+  opponentName: string
+  wins: number
+  loses: number
+  draws: number
+}[] = []
+
+if (recordsData?.records) {
+  for (let i = 0; i < recordsData.records.length; i++) {
+    const oName = await opponentName(recordsData.records[i])
+    let opponentData = opponentsPerData.find(
+      (opponent) => opponent.opponentName === oName
+    )
+    if (!opponentData) {
+      opponentData = {
+        opponentName: oName,
+        wins: 0,
+        loses: 0,
+        draws: 0
+      }
+      opponentsPerData.push(opponentData)
+    }
+    if (recordsData.records[i].winner === myID) {
+      opponentData.wins++
+    } else if (recordsData.records[i].winner === 'draw') {
+      opponentData.draws++
+    } else {
+      opponentData.loses++
+    }
   }
 }
 </script>
@@ -128,33 +158,12 @@ if (recordsData?.records) {
           <th>投了</th>
         </tr>
 
-        <tr height="40">
-          <td>太郎</td>
-          <td>３２</td>
-          <td>　０</td>
-          <td>　０</td>
-          <td>　０</td>
-        </tr>
-        <tr height="40">
-          <td>次郎</td>
-          <td>３０</td>
-          <td>　２</td>
-          <td>　０</td>
-          <td>　０</td>
-        </tr>
-        <tr height="40">
-          <td>三郎</td>
-          <td>１０</td>
-          <td>２２</td>
-          <td>　０</td>
-          <td>　０</td>
-        </tr>
-        <tr height="40">
-          <td>四郎</td>
-          <td>２０</td>
-          <td>１２</td>
-          <td>　０</td>
-          <td>　０</td>
+        <tr height="40" v-for="d in opponentsPerData">
+          <td>{{ d.opponentName }}</td>
+          <td>{{ d.wins }}</td>
+          <td>{{ d.loses }}</td>
+          <td>{{ d.draws }}</td>
+          <td>0</td>
         </tr>
       </table>
     </div>
