@@ -107,7 +107,7 @@ export class ReversiBoard {
     return this.game
   }
 
-  updatePossibleDiscs(): void {
+  public updatePossibleDiscs(): void {
     // 順番を反転させて判定を行う
     for (let i = 0; i < 64; i++) {
       if (this.game.board[i] === Disc.EMPTY_POSSIBLE) {
@@ -160,10 +160,10 @@ export class ReversiBoard {
   }
 
   public checkOpponentDiscPossible(): boolean {
-    const currentDisc= DiscRole.getDisc(
+    const opponentDisc = DiscRole.getDisc(this.game.turn)
+    const currentDisc = DiscRole.getDisc(
       DiscRole.getOpponentDisc(this.game.turn)
     )
-    const opponentDisc = DiscRole.getDisc(this.game.turn)
     for (let i = 0; i < 64; i++) {
       if (this.game.board[i] !== Disc.EMPTY) {
         continue
@@ -224,5 +224,4 @@ export class ReversiBoard {
   public getGame(){
     return this.game
   }
-
 }
