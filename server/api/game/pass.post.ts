@@ -82,7 +82,8 @@ export default defineEventHandler(async (event) => {
     .doc(game.id)
     .update({
       turn: game.turn === DiscRole.BLACK ? DiscRole.WHITE : DiscRole.BLACK,
-      board: newGame.getGame().board
+      board: newGame.getGame().board,
+      possible_num: newGame.countDiscs().possible
     })
 
   return {
