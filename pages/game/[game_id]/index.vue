@@ -102,24 +102,32 @@ const updateUsername = async () => {
   }
 }
 
+const showPass = ref(false)
+const onPass = function () {
+  axios.post('/api/game/pass', {
+    gameID: gameID
+  })
+}
+
 onSnapshot(gameRef, async (doc) => {
   if (!doc.exists()) useRouter().push('/')
   data.gameData = doc.data() as Game
   data.gameData.id = doc.id
   statusText.value = await updateStatusText()
   await updateUsername()
+  if (data.gameData.possible_num === 0 && !data.gameData.end) {
+    showPass.value = true
+    setTimeout(async () => {
+      await onPass()
+      showPass.value = false
+    }, 1500)
+  }
 })
 const onPlace = function (row, col) {
   if (!yourTurn) return
   axios.post('/api/game/place', {
     gameID: gameID,
     index: row * 8 + col
-  })
-}
-
-const onPass = function () {
-  axios.post('/api/game/pass', {
-    gameID: gameID
   })
 }
 
@@ -143,19 +151,18 @@ const onGiveup = function () {
         :white="data.gameData.white_num"
         :white_user="whiteUsername as string"
       />
-      <button class="action-button" @click="onPass">PASS</button>
-      <!--      <button class="action-button" @click="onGiveup">投了する</button>-->
+      <button class="action-button" @click="onGiveup">投了する</button>
       <button
+        v-if="data.gameData.end"
         class="action-button"
         @click="useRouter().push('/')"
-        v-if="data.gameData.end"
       >
         ホームに戻る
       </button>
       <button
+        v-if="data.gameData.end"
         class="action-button"
         @click="useRouter().push('/record')"
-        v-if="data.gameData.end"
       >
         戦績を確認する
       </button>
@@ -165,12 +172,12 @@ const onGiveup = function () {
         <ReversiBoard :board="data.gameData.board" @cell-click="onPlace" />
       </div>
     </div>
-    <!--    <div class="end-frame">-->
-    <!--      <div class="popup">-->
-    <!--        <img alt="" src="@/assets/imgs/frog_with_board_green.png" />-->
-    <!--        <h1>ゲームが<br />終了しました</h1>-->
-    <!--      </div>-->
-    <!--    </div>-->
+    <div v-show="showPass" class="end-frame">
+      <div class="popup">
+        <img alt="" src="@/assets/imgs/frog_with_board_green.png" />
+        <h1>パス</h1>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -248,6 +255,7 @@ const onGiveup = function () {
 }
 
 .end-frame {
+  background: #303030aa;
   position: absolute;
   width: 100%;
   height: 100%;
