@@ -75,7 +75,7 @@ export default defineEventHandler(async (event) => {
 
   await db
     .collection('games')
-    .doc(game.id)
+    .doc(req.gameID)
     .update({
       turn: game.turn === DiscRole.BLACK ? DiscRole.WHITE : DiscRole.BLACK
     })
