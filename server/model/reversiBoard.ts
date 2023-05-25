@@ -107,7 +107,7 @@ export class ReversiBoard {
     return this.game
   }
 
-  private updatePossibleDiscs(): void {
+  updatePossibleDiscs(): void {
     // 順番を反転させて判定を行う
     for (let i = 0; i < 64; i++) {
       if (this.game.board[i] === Disc.EMPTY_POSSIBLE) {
@@ -221,4 +221,8 @@ export class ReversiBoard {
 
     return { black, white, possible }
   }
+  public getGame(){
+    return this.game
+  }
+
 }

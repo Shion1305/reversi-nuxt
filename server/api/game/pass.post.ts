@@ -1,5 +1,6 @@
 import { getGameByID } from '~/server/pkg/game'
 import { DiscRole } from '~/server/model/disc_role'
+import { ReversiBoard } from '~/server/model/reversiBoard'
 import admin from '~/server/firebase-admin'
 
 export interface PassRequest {
@@ -73,11 +74,15 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  let newGame = new ReversiBoard(game);
+  newGame.updatePossibleDiscs();
+
   await db
     .collection('games')
     .doc(game.id)
     .update({
-      turn: game.turn === DiscRole.BLACK ? DiscRole.WHITE : DiscRole.BLACK
+      turn: game.turn === DiscRole.BLACK ? DiscRole.WHITE : DiscRole.BLACK,
+      board: newGame.getGame().board
     })
 
   return {
