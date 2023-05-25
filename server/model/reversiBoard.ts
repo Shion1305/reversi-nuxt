@@ -160,8 +160,8 @@ export class ReversiBoard {
   }
 
   public checkOpponentDiscPossible(): boolean {
-    const currentDisc = DiscRole.getDisc(this.game.turn)
-    const opponentDisc = DiscRole.getDisc(
+    const opponentDisc = DiscRole.getDisc(this.game.turn)
+    const currentDisc = DiscRole.getDisc(
       DiscRole.getOpponentDisc(this.game.turn)
     )
     for (let i = 0; i < 64; i++) {
