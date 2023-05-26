@@ -9,25 +9,20 @@ const recordsData: {
   wins: number
   loses: number
   draws: number
+  giveups: number
 } | null = await axios
   .get('/api/record/get-record')
   .then((res) => {
-    console.log(res.data)
     if (!res.data.records) {
       console.log('invalid response')
       return null
     }
-    console.log({
-      records: res.data.records as Result[],
-      wins: res.data.wins as number,
-      loses: res.data.loses as number,
-      draws: res.data.draws as number
-    })
     return {
       records: res.data.records as Result[],
       wins: res.data.wins as number,
       loses: res.data.loses as number,
-      draws: res.data.draws as number
+      draws: res.data.draws as number,
+      giveups: res.data.giveups as number
     }
   })
   .catch((error) => {
@@ -119,15 +114,11 @@ if (recordsData?.records) {
         <img height="300" src="@/assets/imgs/leaf.png" width="700" />
       </div>
       <div class="g2">
-        <p><font size="5">通算戦績</font></p>
-        <p>
-          <font size="30"
-            >勝ち:{{ recordsData?.wins }} 負け:{{ recordsData?.loses }}</font
-          >
-        </p>
-        <p>
-          <font size="30">引き分け:{{ recordsData?.draws }} 投了:0</font>
-        </p>
+        <h1>通算戦績</h1>
+        <div>勝ち:{{ recordsData?.wins }}</div>
+        <div>負け:{{ recordsData?.loses }}</div>
+        <div>引き分け:{{ recordsData?.draws }}</div>
+        <div>(負け うち投了:{{ recordsData?.giveups }})</div>
       </div>
     </div>
 
@@ -158,7 +149,7 @@ if (recordsData?.records) {
           <th>投了</th>
         </tr>
 
-        <tr height="40" v-for="d in opponentsPerData">
+        <tr v-for="d in opponentsPerData" height="40">
           <td>{{ d.opponentName }}</td>
           <td>{{ d.wins }}</td>
           <td>{{ d.loses }}</td>
@@ -176,7 +167,7 @@ if (recordsData?.records) {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -188,6 +179,11 @@ if (recordsData?.records) {
 
 .g2 {
   position: absolute;
+  font-size: 35px;
+
+  h1 {
+    margin: 30px 0 0;
+  }
 }
 
 .result {
