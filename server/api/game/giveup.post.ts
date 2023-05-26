@@ -53,7 +53,8 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  await db.collection('games').doc(req.gameID).update({
+  const batch = db.batch()
+  batch.update(db.collection('games').doc(req.gameID), {
     end: true,
     surrender: userID
   })
@@ -71,7 +72,17 @@ export default defineEventHandler(async (event) => {
     time: new Date(),
     surrender: true
   } as Result
-  await db.collection('results').doc(req.gameID).set(result)
+  batch.set(
+    db.collection('users').doc(userID).collection('results').doc(req.gameID),
+    result
+  )
+  batch.update(db.collection('users').doc(userID), {
+    in_game: false
+  })
+  batch.update(db.collection('users').doc(opponentUserID), {
+    in_game: false
+  })
+  await batch.commit()
   return {
     statusCode: 200
   }
