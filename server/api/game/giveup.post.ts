@@ -1,5 +1,8 @@
 import { PassRequest } from '~/server/api/game/pass.post'
 import { getGameByID } from '~/server/pkg/game'
+import admin from '~/server/firebase-admin'
+
+const db = admin.firestore()
 
 export default defineEventHandler(async (event) => {
   const userID = event.context.userID
@@ -48,5 +51,13 @@ export default defineEventHandler(async (event) => {
       statusCode: 404,
       statusMessage: 'No Active Game Found, Game is over'
     })
+  }
+
+  await db.collection('games').doc(req.gameID).update({
+    end: true,
+    surrender: userID
+  })
+  return {
+    statusCode: 200
   }
 })
