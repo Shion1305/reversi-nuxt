@@ -72,10 +72,7 @@ export default defineEventHandler(async (event) => {
     time: new Date(),
     surrender: true
   } as Result
-  batch.set(
-    db.collection('users').doc(userID).collection('results').doc(req.gameID),
-    result
-  )
+  batch.set(db.collection('results').doc(req.gameID), result)
   batch.update(db.collection('users').doc(userID), {
     in_game: false
   })
