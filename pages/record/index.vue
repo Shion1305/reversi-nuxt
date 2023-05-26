@@ -122,6 +122,7 @@ if (recordsData?.records) {
       </div>
     </div>
 
+    <h1>過去の戦績</h1>
     <div class="table">
       <table bgcolor="#90ee90" border="1" height="150" width="500">
         <tr height="20">
@@ -130,7 +131,6 @@ if (recordsData?.records) {
           <th>自分</th>
           <th>相手</th>
         </tr>
-
         <tr v-for="r in recordsTable as any[]" height="40">
           <td>{{ r.opponentName }}</td>
           <td>{{ r.result }}</td>
@@ -139,7 +139,8 @@ if (recordsData?.records) {
         </tr>
       </table>
     </div>
-    <div class="table2">
+    <h1>相手毎の通算戦績</h1>
+    <div class="table">
       <table bgcolor="#90ee90" border="1" height="150" width="625">
         <tr height="20">
           <th>名前</th>
@@ -148,7 +149,6 @@ if (recordsData?.records) {
           <th>引分</th>
           <th>投了</th>
         </tr>
-
         <tr v-for="d in opponentsPerData" height="40">
           <td>{{ d.opponentName }}</td>
           <td>{{ d.wins }}</td>
@@ -157,12 +157,6 @@ if (recordsData?.records) {
           <td>0</td>
         </tr>
       </table>
-    </div>
-    <div class="m1">
-      <p><font size="5">過去の戦績</font></p>
-    </div>
-    <div class="m2">
-      <p><font size="5">相手毎の通算戦績</font></p>
     </div>
   </div>
 </template>
@@ -179,11 +173,15 @@ if (recordsData?.records) {
 
 .g2 {
   position: absolute;
-  font-size: 35px;
+  font-size: 25px;
 
   h1 {
     margin: 30px 0 0;
   }
+}
+
+h1 {
+  margin: 30px auto 0;
 }
 
 .result {
@@ -192,20 +190,11 @@ if (recordsData?.records) {
 }
 
 .table {
-  position: absolute;
-
   bottom: 50px;
   overflow-y: scroll;
-  width: 517px;
-  height: 150px;
-}
-
-.table2 {
-  position: absolute;
-  right: 0;
-  bottom: 50px;
-  overflow-y: scroll;
-  width: 642px;
+  width: fit-content;
+  max-width: 80%;
+  margin: 0 auto;
   height: 150px;
 }
 
