@@ -9,25 +9,20 @@ const recordsData: {
   wins: number
   loses: number
   draws: number
+  giveups: number
 } | null = await axios
   .get('/api/record/get-record')
   .then((res) => {
-    console.log(res.data)
     if (!res.data.records) {
       console.log('invalid response')
       return null
     }
-    console.log({
-      records: res.data.records as Result[],
-      wins: res.data.wins as number,
-      loses: res.data.loses as number,
-      draws: res.data.draws as number
-    })
     return {
       records: res.data.records as Result[],
       wins: res.data.wins as number,
       loses: res.data.loses as number,
-      draws: res.data.draws as number
+      draws: res.data.draws as number,
+      giveups: res.data.giveups as number
     }
   })
   .catch((error) => {
@@ -119,18 +114,15 @@ if (recordsData?.records) {
         <img height="300" src="@/assets/imgs/leaf.png" width="700" />
       </div>
       <div class="g2">
-        <p><font size="5">通算戦績</font></p>
-        <p>
-          <font size="30"
-            >勝ち:{{ recordsData?.wins }} 負け:{{ recordsData?.loses }}</font
-          >
-        </p>
-        <p>
-          <font size="30">引き分け:{{ recordsData?.draws }} 投了:0</font>
-        </p>
+        <h1>通算戦績</h1>
+        <div>勝ち:{{ recordsData?.wins }}</div>
+        <div>負け:{{ recordsData?.loses }}</div>
+        <div>引き分け:{{ recordsData?.draws }}</div>
+        <div>(負け うち投了:{{ recordsData?.giveups }})</div>
       </div>
     </div>
 
+    <h1>過去の戦績</h1>
     <div class="table">
       <table bgcolor="#90ee90" border="1" height="150" width="500">
         <tr height="20">
@@ -139,7 +131,6 @@ if (recordsData?.records) {
           <th>自分</th>
           <th>相手</th>
         </tr>
-
         <tr v-for="r in recordsTable as any[]" height="40">
           <td>{{ r.opponentName }}</td>
           <td>{{ r.result }}</td>
@@ -148,7 +139,8 @@ if (recordsData?.records) {
         </tr>
       </table>
     </div>
-    <div class="table2">
+    <h1>相手毎の通算戦績</h1>
+    <div class="table">
       <table bgcolor="#90ee90" border="1" height="150" width="625">
         <tr height="20">
           <th>名前</th>
@@ -157,8 +149,7 @@ if (recordsData?.records) {
           <th>引分</th>
           <th>投了</th>
         </tr>
-
-        <tr height="40" v-for="d in opponentsPerData">
+        <tr v-for="d in opponentsPerData" height="40">
           <td>{{ d.opponentName }}</td>
           <td>{{ d.wins }}</td>
           <td>{{ d.loses }}</td>
@@ -167,16 +158,10 @@ if (recordsData?.records) {
         </tr>
       </table>
     </div>
-    <div class="m1">
-      <p><font size="5">過去の戦績</font></p>
-    </div>
-    <div class="m2">
-      <p><font size="5">相手毎の通算戦績</font></p>
-    </div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -188,6 +173,15 @@ if (recordsData?.records) {
 
 .g2 {
   position: absolute;
+  font-size: 25px;
+
+  h1 {
+    margin: 30px 0 0;
+  }
+}
+
+h1 {
+  margin: 30px auto 0;
 }
 
 .result {
@@ -196,20 +190,11 @@ if (recordsData?.records) {
 }
 
 .table {
-  position: absolute;
-
   bottom: 50px;
   overflow-y: scroll;
-  width: 517px;
-  height: 150px;
-}
-
-.table2 {
-  position: absolute;
-  right: 0;
-  bottom: 50px;
-  overflow-y: scroll;
-  width: 642px;
+  width: fit-content;
+  max-width: 80%;
+  margin: 0 auto;
   height: 150px;
 }
 

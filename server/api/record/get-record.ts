@@ -18,13 +18,16 @@ export default defineEventHandler(async (event) => {
     })
   const wins = results.filter((result) => {
     return result.winner === event.context.userID
-  }).length
+  })
   const loses = results.filter((result) => {
     return result.winner !== event.context.userID
-  }).length
+  })
   const draws = results.filter((result) => {
     return result.winner === 'draw'
-  }).length
+  })
+  const giveups = loses.filter((result) => {
+    return result.surrender
+  })
   // for (const result of results) {
   //   const blackUser = await db
   //     .collection('users')
@@ -39,8 +42,9 @@ export default defineEventHandler(async (event) => {
   // }
   return {
     records: results,
-    wins: wins,
-    loses: loses,
-    draws: draws
+    wins: wins.length,
+    loses: loses.length,
+    draws: draws.length,
+    giveups: giveups.length
   }
 })
