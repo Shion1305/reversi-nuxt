@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
   if (!req || !req.gameID || req.index === undefined || req.index === null) {
     return createError({
       statusCode: 400,
-      statusMessage: 'Bad Request'
+      statusMessage: 'Bad Request, invalid request body'
     })
   }
 
@@ -111,7 +111,7 @@ export default defineEventHandler(async (event) => {
         time: new Date(),
         surrender: false
       } as Result
-      await transaction.create(db.collection('results').doc(), result)
+      await transaction.create(db.collection('results').doc(req.gameID), result)
     })
   }
   return {

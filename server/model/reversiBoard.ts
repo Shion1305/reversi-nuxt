@@ -165,7 +165,10 @@ export class ReversiBoard {
       DiscRole.getOpponentDisc(this.game.turn)
     )
     for (let i = 0; i < 64; i++) {
-      if (this.game.board[i] !== Disc.EMPTY) {
+      if (
+        this.game.board[i] !== Disc.EMPTY &&
+        this.game.board[i] !== Disc.EMPTY_POSSIBLE
+      ) {
         continue
       }
 
@@ -221,7 +224,7 @@ export class ReversiBoard {
 
     return { black, white, possible }
   }
-  public getGame(){
+  public getGame() {
     return this.game
   }
 }

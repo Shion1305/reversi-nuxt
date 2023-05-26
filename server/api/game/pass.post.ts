@@ -74,14 +74,17 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  let newGame = new ReversiBoard(game);
-  newGame.updatePossibleDiscs();
+  const newGame = new ReversiBoard(game)
+  newGame.updatePossibleDiscs()
 
   await db
     .collection('games')
     .doc(req.gameID)
     .update({
-      turn: game.turn === DiscRole.BLACK ? DiscRole.WHITE : DiscRole.BLACK,
+      turn:
+        newGame.getGame().turn === DiscRole.BLACK
+          ? DiscRole.WHITE
+          : DiscRole.BLACK,
       board: newGame.getGame().board,
       possible_num: newGame.countDiscs().possible
     })
