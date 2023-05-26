@@ -158,6 +158,7 @@ if (recordsData?.records) {
         </tr>
       </table>
     </div>
+    <NuxtLink to="/" class="link">トップに戻る</NuxtLink>
   </div>
 </template>
 
@@ -182,6 +183,18 @@ if (recordsData?.records) {
 
 h1 {
   margin: 30px auto 0;
+}
+
+.link {
+  width: fit-content;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: black;
+  font-size: 30px;
+  background: white;
+  border: 2px solid black;
 }
 
 .result {
