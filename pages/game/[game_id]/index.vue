@@ -173,7 +173,9 @@ const onGiveup = function () {
         :white="data.gameData.white_num"
         :white_user="whiteUsername as string"
       />
-      <button class="action-button" @click="onGiveup">投了する</button>
+      <button class="action-button" @click="onGiveup" v-if="!data.gameData.end">
+        投了する
+      </button>
       <button
         v-if="data.gameData.end"
         class="action-button"
