@@ -45,6 +45,12 @@ const updateStatusText = async (): Promise<string> => {
     return 'マッチング中...'
   }
   if (data.gameData.end) {
+    if (data.gameData.surrender) {
+      if (data.gameData.surrender === currentUser?.userID) {
+        return 'あなたの投了で\n終了しました'
+      }
+      return '相手の投了で\n終了しました'
+    }
     if (data.gameData.black_num > data.gameData.white_num) {
       if (userDiscRole === DiscRole.BLACK) {
         return 'あなたの勝ちです'
@@ -129,7 +135,7 @@ onSnapshot(gameRef, async (doc) => {
   }
   if (data.gameData.end) {
     if (data.gameData.surrender) {
-      if (data.gameData.surrender === currentUser?.username) {
+      if (data.gameData.surrender === currentUser?.userID) {
         showModal('投了しました')
       } else {
         showModal('相手が投了しました')
@@ -167,7 +173,9 @@ const onGiveup = function () {
         :white="data.gameData.white_num"
         :white_user="whiteUsername as string"
       />
-      <button class="action-button" @click="onGiveup">投了する</button>
+      <button class="action-button" @click="onGiveup" v-if="!data.gameData.end">
+        投了する
+      </button>
       <button
         v-if="data.gameData.end"
         class="action-button"
@@ -261,6 +269,7 @@ const onGiveup = function () {
   > div {
     position: absolute;
     width: 80%;
+    white-space: pre-wrap;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
