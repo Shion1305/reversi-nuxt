@@ -57,6 +57,22 @@ export default defineEventHandler(async (event) => {
     end: true,
     surrender: userID
   })
+  const result = {
+    black_user: game.black_user,
+    white_user: game.white_user,
+    black_num: game.black_num,
+    white_num: game.white_num,
+    winner:
+      game.white_num > game.black_num
+        ? game.white_user
+        : game.white_num < game.black_num
+        ? game.black_user
+        : 'draw',
+    users: game.users,
+    time: new Date(),
+    surrender: true
+  } as Result
+  await db.collection('results').doc(req.gameID).set(result)
   return {
     statusCode: 200
   }
