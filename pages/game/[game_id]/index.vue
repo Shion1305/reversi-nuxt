@@ -102,7 +102,15 @@ const updateUsername = async () => {
   }
 }
 
-const showPass = ref(false)
+const modalState = ref(false)
+const modalText = ref('')
+const showModal = function (text: string) {
+  modalText.value = text
+  modalState.value = true
+  setTimeout(async () => {
+    modalState.value = false
+  }, 1500)
+}
 const onPass = function () {
   axios.post('/api/game/pass', {
     gameID: gameID
@@ -116,11 +124,8 @@ onSnapshot(gameRef, async (doc) => {
   statusText.value = await updateStatusText()
   await updateUsername()
   if (data.gameData.possible_num === 0 && !data.gameData.end) {
-    showPass.value = true
-    setTimeout(async () => {
-      await onPass()
-      showPass.value = false
-    }, 1500)
+    showModal('パス!!')
+    await onPass()
   }
 })
 const onPlace = function (row, col) {
@@ -172,10 +177,10 @@ const onGiveup = function () {
         <ReversiBoard :board="data.gameData.board" @cell-click="onPlace" />
       </div>
     </div>
-    <div v-show="showPass" class="end-frame">
+    <div v-show="modalState" class="end-frame">
       <div class="popup">
         <img alt="" src="@/assets/imgs/frog_with_board_green.png" />
-        <h1>パス</h1>
+        <h1>{{ modalText }}</h1>
       </div>
     </div>
   </div>
@@ -280,7 +285,6 @@ const onGiveup = function () {
       text-align: center;
       font-size: 50px;
       color: #330000;
-      text-align: center;
     }
   }
 }
