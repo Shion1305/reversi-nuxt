@@ -135,7 +135,7 @@ onSnapshot(gameRef, async (doc) => {
   }
   if (data.gameData.end) {
     if (data.gameData.surrender) {
-      if (data.gameData.surrender === currentUser?.username) {
+      if (data.gameData.surrender === currentUser?.userID) {
         showModal('投了しました')
       } else {
         showModal('相手が投了しました')
@@ -267,6 +267,7 @@ const onGiveup = function () {
   > div {
     position: absolute;
     width: 80%;
+    white-space: pre-wrap;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
