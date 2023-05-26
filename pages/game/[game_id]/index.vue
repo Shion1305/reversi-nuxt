@@ -45,6 +45,12 @@ const updateStatusText = async (): Promise<string> => {
     return 'マッチング中...'
   }
   if (data.gameData.end) {
+    if (data.gameData.surrender) {
+      if (data.gameData.surrender === currentUser?.userID) {
+        return 'あなたの投了で\n終了しました'
+      }
+      return '相手の投了で\n終了しました'
+    }
     if (data.gameData.black_num > data.gameData.white_num) {
       if (userDiscRole === DiscRole.BLACK) {
         return 'あなたの勝ちです'
