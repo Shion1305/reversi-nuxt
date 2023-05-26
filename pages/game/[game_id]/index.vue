@@ -29,9 +29,9 @@ const statusText = ref('')
 const blackUsername = ref('')
 const whiteUsername = ref('')
 let yourTurn = false
+const currentUser = await useLogin().getCurrentUser()
 const updateStatusText = async (): Promise<string> => {
   yourTurn = false
-  const currentUser = await useLogin().getCurrentUser()
   let userDiscRole: DiscRole
   if (currentUser) {
     if (data.gameData.black_user === currentUser.userID) {
@@ -126,6 +126,17 @@ onSnapshot(gameRef, async (doc) => {
   if (data.gameData.possible_num === 0 && !data.gameData.end) {
     showModal('パス!!')
     await onPass()
+  }
+  if (data.gameData.end) {
+    if (data.gameData.surrender) {
+      if (data.gameData.surrender === currentUser?.username) {
+        showModal('投了しました')
+      } else {
+        showModal('相手が投了しました')
+      }
+    } else {
+      showModal('ゲーム終了')
+    }
   }
 })
 const onPlace = function (row, col) {

@@ -14,4 +14,5 @@ export interface Game {
   black_time: Date
   white_time: Date
   end: boolean
+  surrender: string
 }
