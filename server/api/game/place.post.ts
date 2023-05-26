@@ -111,7 +111,7 @@ export default defineEventHandler(async (event) => {
         time: new Date(),
         surrender: false
       } as Result
-      await transaction.create(db.collection('results').doc(), result)
+      await transaction.create(db.collection('results').doc(req.gameID), result)
     })
   }
   return {
