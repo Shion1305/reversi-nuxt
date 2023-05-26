@@ -57,17 +57,16 @@ export default defineEventHandler(async (event) => {
     end: true,
     surrender: userID
   })
+
+  const opponentUserID =
+    game.users[0] === userID ? game.users[1] : game.users[0]
+
   const result = {
     black_user: game.black_user,
     white_user: game.white_user,
     black_num: game.black_num,
     white_num: game.white_num,
-    winner:
-      game.white_num > game.black_num
-        ? game.white_user
-        : game.white_num < game.black_num
-        ? game.black_user
-        : 'draw',
+    winner: opponentUserID,
     users: game.users,
     time: new Date(),
     surrender: true
