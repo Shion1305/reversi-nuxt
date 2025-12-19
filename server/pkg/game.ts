@@ -17,6 +17,17 @@ export async function getGameByID(gameID: string): Promise<Game | null> {
   
   return {
     id: gameDoc.id,
-    ...gameData
-  } as Game
+    board: gameData.board,
+    turn: gameData.turn,
+    users: gameData.users,
+    black_user: gameData.black_user,
+    white_user: gameData.white_user,
+    black_num: gameData.black_num,
+    white_num: gameData.white_num,
+    possible_num: gameData.possible_num,
+    black_time: gameData.black_time,
+    white_time: gameData.white_time,
+    end: gameData.end,
+    surrender: gameData.surrender
+  }
 }
