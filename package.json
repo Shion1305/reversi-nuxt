@@ -1,12 +1,12 @@
 {
   "name": "nuxt-app",
   "private": true,
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
     "start": "HOST=0.0.0.0 PORT=8080 node ./.output/server/index.mjs"
   },
   "devDependencies": {
