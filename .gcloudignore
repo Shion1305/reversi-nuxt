@@ -5,8 +5,7 @@
 # Allow specific files and directories
 !/app.yaml
 !/package.json
-!/package-lock.json
-!/yarn.lock
+!/pnpm-lock.yaml
 !/nuxt.config.js
 !/static/
 !/assets/
