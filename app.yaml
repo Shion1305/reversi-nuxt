@@ -7,6 +7,8 @@ automatic_scaling:
   min_instances: 0
   max_instances: 1
 
+entrypoint: node .output/server/index.mjs
+
 handlers:
   - url: /.*
     script: auto

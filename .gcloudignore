@@ -2,19 +2,7 @@
 # Ignore everything
 *
 
-# Allow specific files and directories
+# Allow only the built output and runtime configuration
 !/app.yaml
-!/package.json
-!/pnpm-lock.yaml
-!/nuxt.config.js
-!/static/
-!/assets/
-!/components/
-!/layouts/
-!/middleware/
-!/pages/
-!/plugins/
-!/store/
-!/.nuxt/
 !/.output/
 !/credentials
