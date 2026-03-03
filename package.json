@@ -10,7 +10,7 @@
     "start": "HOST=0.0.0.0 PORT=8080 node ./.output/server/index.mjs"
   },
   "devDependencies": {
-    "@types/cookie": "^0.5.1",
+    "@types/cookie": "^0.6.0",
     "nuxt": "^4.2.2",
     "prettier": "^2.8.7",
     "typescript": "^5.0.4"
