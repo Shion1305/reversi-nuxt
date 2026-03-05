@@ -1,7 +1,7 @@
 {
   "name": "nuxt-app",
   "private": true,
-  "packageManager": "pnpm@9.15.9",
+  "packageManager": "pnpm@10.30.3",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
