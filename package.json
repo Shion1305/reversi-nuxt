@@ -13,7 +13,7 @@
     "@types/cookie": "^1.0.0",
     "nuxt": "^4.2.2",
     "prettier": "^2.8.7",
-    "typescript": "^5.0.4"
+    "typescript": "^6.0.0"
   },
   "dependencies": {
     "axios": "^1.12.0",
