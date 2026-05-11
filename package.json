@@ -10,14 +10,14 @@
     "start": "HOST=0.0.0.0 PORT=8080 node ./.output/server/index.mjs"
   },
   "devDependencies": {
-    "@types/cookie": "^0.6.0",
+    "@types/cookie": "^1.0.0",
     "nuxt": "^4.2.2",
     "prettier": "^2.8.7",
     "typescript": "^5.0.4"
   },
   "dependencies": {
     "axios": "^1.12.0",
-    "cookie": "^0.7.0",
+    "cookie": "^1.0.0",
     "firebase": "^10.9.0",
     "firebase-admin": "^11.6.0",
     "jsonwebtoken": "^9.0.0",
