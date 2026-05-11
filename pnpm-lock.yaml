@@ -13,7 +13,7 @@ importers:
         version: 1.15.2
       cookie:
         specifier: ^0.7.0
-        version: 0.7.0
+        version: 0.7.2
       firebase:
         specifier: ^10.9.0
         version: 10.9.0
@@ -1991,8 +1991,8 @@ packages:
   cookie-es@2.0.0:
     resolution: {integrity: sha512-RAj4E421UYRgqokKUmotqAwuplYw15qtdXfY+hGzgCJ/MBjCVZcSoHK/kH9kocfjRjcDME7IiDWR/1WX1TM2Pg==}
 
-  cookie@0.7.0:
-    resolution: {integrity: sha512-qCf+V4dtlNhSRXGAZatc1TasyFO6GjohcOul807YOb5ik3+kQSnb4d7iajeCL8QHaJ4uZEjCgiCJerKXwdRVlQ==}
+  cookie@0.7.2:
+    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
 
   copy-anything@4.0.5:
@@ -6369,7 +6369,7 @@ snapshots:
 
   cookie-es@2.0.0: {}
 
-  cookie@0.7.0: {}
+  cookie@0.7.2: {}
 
   copy-anything@4.0.5:
     dependencies:
