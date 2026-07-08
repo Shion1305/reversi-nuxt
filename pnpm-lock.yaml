@@ -12,8 +12,8 @@ importers:
         specifier: ^1.12.0
         version: 1.16.0
       cookie:
-        specifier: ^1.0.0
-        version: 1.1.1
+        specifier: ^2.0.0
+        version: 2.0.1
       firebase:
         specifier: ^10.9.0
         version: 10.9.0
@@ -2168,9 +2168,9 @@ packages:
   cookie-es@3.1.1:
     resolution: {integrity: sha512-UaXxwISYJPTr9hwQxMFYZ7kNhSXboMXP+Z3TRX6f1/NyaGPfuNUZOWP1pUEb75B2HjfklIYLVRfWiFZJyC6Npg==}
 
-  cookie@1.1.1:
-    resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
-    engines: {node: '>=18'}
+  cookie@2.0.1:
+    resolution: {integrity: sha512-yuToqVvRrj6pfDXREyQAAv8SkAEk/8GS3jQRTiUMm66TVtBYmqQeoEjL2Lmq8Rpo6271vH76InTChTitEAm65w==}
+    engines: {node: '>=22'}
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -6036,7 +6036,7 @@ snapshots:
 
   '@types/cookie@1.0.0':
     dependencies:
-      cookie: 1.1.1
+      cookie: 2.0.1
 
   '@types/estree@1.0.8': {}
 
@@ -6607,7 +6607,7 @@ snapshots:
 
   cookie-es@3.1.1: {}
 
-  cookie@1.1.1: {}
+  cookie@2.0.1: {}
 
   core-util-is@1.0.3: {}
 
